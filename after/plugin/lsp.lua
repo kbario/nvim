@@ -1,17 +1,14 @@
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
 local Remap = require("kbario.keymap")
 local nnoremap = Remap.nnoremap
 local inoremap = Remap.inoremap
-
-vim.opt.completeopt = { "menu", "menuone", "noselect" }
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 require("mason").setup()
 require("mason-lspconfig").setup()
 
 local lspkind = require("lspkind")
-
 local cmp = require("cmp")
 
 cmp.setup({
@@ -43,12 +40,11 @@ cmp.setup({
         nvim_lua = "[Lua]",
         path = "[path]",
         luasnip = "[snip]",
-      }
+      },
     },
-    experimental = {
-      native_menu = false,
-      ghost_text = false,
-    },
+  },
+  experimental = {
+    ghost_text = true,
   },
 })
 
@@ -68,7 +64,8 @@ local function config(_config)
       nnoremap("<leader>rn", function() vim.lsp.buf.rename() end)
       nnoremap("<leader>sa", function() vim.lsp.buf.formatting() end)
       inoremap("<C-h>", function() vim.lsp.buf.signature_help() end)
-    end,
+end
+,
   }, _config or {})
 end
 
