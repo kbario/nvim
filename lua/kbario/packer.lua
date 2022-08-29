@@ -1,4 +1,4 @@
-vim.cmd[[packadd packer.nvim]]
+vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
   -- Packer can manage itself
@@ -11,7 +11,7 @@ return require('packer').startup(function(use)
   -- telescope
   use {
     'nvim-telescope/telescope.nvim', branch = '0.1.x',
-    requires = { {'nvim-lua/plenary.nvim'} }
+    requires = { { 'nvim-lua/plenary.nvim' } }
   }
 
   -- treesitter
@@ -19,11 +19,17 @@ return require('packer').startup(function(use)
     'nvim-treesitter/nvim-treesitter',
     run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
   }
+  use("nvim-treesitter/playground")
+  use("romgrk/nvim-treesitter-context")
+
+  -- harpoon
+  use 'nvim-lua/plenary.nvim'
+  use 'ThePrimeagen/harpoon'
 
   -- lualine
   use {
-      'nvim-lualine/lualine.nvim',
-      requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+    'nvim-lualine/lualine.nvim',
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
   }
   use("sbdchd/neoformat")
 
@@ -32,7 +38,7 @@ return require('packer').startup(function(use)
   use {
     "williamboman/mason.nvim",
     "williamboman/mason-lspconfig.nvim",
-    }
+  }
 
   use("neovim/nvim-lspconfig")
 
@@ -50,4 +56,11 @@ return require('packer').startup(function(use)
   -- lua snippet plugin
   use("L3MON4D3/LuaSnip")
   use("saadparwaiz1/cmp_luasnip")
+
+  use("ThePrimeagen/vim-be-good")
+
+  -- debugging
+  use("mfussenegger/nvim-dap")
+  use("rcarriga/nvim-dap-ui")
+  use("theHamsta/nvim-dap-virtual-text")
 end)

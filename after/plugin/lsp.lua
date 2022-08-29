@@ -45,16 +45,32 @@ cmp.setup({
   },
   experimental = {
     ghost_text = true,
+    native_menu = false,
   },
 })
 
 local function config(_config)
   return vim.tbl_deep_extend("force", {
     capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    --[[on_attach = function()
+			nnoremap("gd", function() vim.lsp.buf.definition() end)
+			nnoremap("K", function() vim.lsp.buf.hover() end)
+			nnoremap("<leader>vws", function() vim.lsp.buf.workspace_symbol() end)
+			nnoremap("<leader>vd", function() vim.diagnostic.open_float() end)
+			nnoremap("[d", function() vim.diagnostic.goto_next() end)
+			nnoremap("]d", function() vim.diagnostic.goto_prev() end)
+			nnoremap("<leader>vca", function() vim.lsp.buf.code_action() end)
+			nnoremap("<leader>vrr", function() vim.lsp.buf.references() end)
+			nnoremap("<leader>vrn", function() vim.lsp.buf.rename() end)
+			inoremap("<C-h>", function() vim.lsp.buf.signature_help() end)
+		end,
+	}, _config or {})
+end]]
+
     on_attach = function()
       nnoremap("K", function() vim.lsp.buf.hover() end)
       nnoremap("<leader>gd", function() vim.lsp.buf.definition() end)
-      -- nnoremap("<leader>vws", function() vim.lsp.buf.workspace_symbol() end)
+      -- vim.keymap.set("<leader>vws", function() vim.lsp.buf.workspace_symbol() end)
       nnoremap("<leader>dg", function() vim.diagnostic.open_float() end)
       nnoremap("<leader>gn", function() vim.diagnostic.goto_next() end)
       nnoremap("<leader>gp", function() vim.diagnostic.goto_prev() end)
@@ -62,10 +78,8 @@ local function config(_config)
       nnoremap("<leader>gr", function() vim.lsp.buf.references() end)
       nnoremap("<leader>gi", function() vim.lsp.buf.implementation() end)
       nnoremap("<leader>rn", function() vim.lsp.buf.rename() end)
-      nnoremap("<leader>sa", function() vim.lsp.buf.formatting() end)
       inoremap("<C-h>", function() vim.lsp.buf.signature_help() end)
-end
-,
+    end,
   }, _config or {})
 end
 
@@ -73,41 +87,39 @@ require("lspconfig").graphql.setup(config())
 
 require('lspconfig').bashls.setup(config())
 
-require('lspconfig').emmet_ls.setup(config())
+--require('lspconfig').emmet_ls.setup(config())
 
 require("lspconfig").marksman.setup(config())
 
 require("lspconfig").tailwindcss.setup(config())
 
-require("lspconfig").svelte.setup(config())
+--require("lspconfig").svelte.setup(config())
 
-require("lspconfig").vuels.setup(config())
+--require("lspconfig").vuels.setup(config())
 
 require("lspconfig").vimls.setup(config())
 
-require("lspconfig").r_language_server.setup(config())
+--require("lspconfig").r_language_server.setup(config())
 
-require("lspconfig").prismals.setup(config())
+--require("lspconfig").prismals.setup(config())
 
 require("lspconfig").html.setup(config())
 
 require("lspconfig").angularls.setup(config())
 
-require("lspconfig").zls.setup(config())
+--require("lspconfig").zls.setup(config())
 
 require("lspconfig").tsserver.setup(config())
 
-require("lspconfig").ccls.setup(config())
+--require("lspconfig").ccls.setup(config())
 
-require("lspconfig").jedi_language_server.setup(config())
+--require("lspconfig").jedi_language_server.setup(config())
 
-require("lspconfig").svelte.setup(config())
+--require("lspconfig").solang.setup(config())
 
-require("lspconfig").solang.setup(config())
+--require("lspconfig").cssls.setup(config())
 
-require("lspconfig").cssls.setup(config())
-
-require("lspconfig").gopls.setup(config({
+--[[require("lspconfig").gopls.setup(config({
   cmd = { "gopls", "serve" },
   settings = {
     gopls = {
@@ -117,27 +129,41 @@ require("lspconfig").gopls.setup(config({
       staticcheck = true,
     },
   },
-}))
+}))]]
 
 -- who even uses this?
 require("lspconfig").rust_analyzer.setup(config({
   cmd = { "rustup", "run", "nightly", "rust-analyzer" },
   --[[
-    settings = {
-        rust = {
-            unstable_features = true,
-            build_on_save = false,
-            all_features = true,
-        },
-    }
-    --]]
+	settings = {
+		rust = {
+			unstable_features = true,
+			build_on_save = false,
+			all_features = true,
+		},
+	}
+	--]]
 }))
 
 require("lspconfig").sumneko_lua.setup(config({
+  cmd = { "/opt/homebrew/Cellar/lua-language-server/3.5.3/libexec/bin/lua-language-server" },
   settings = {
     Lua = {
+      runtime = {
+        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+        version = 'LuaJIT',
+      },
       diagnostics = {
-        globals = { "vim" },
+        -- Get the language server to recognize the `vim` global
+        globals = { 'vim' },
+      },
+      workspace = {
+        -- Make the server aware of Neovim runtime files
+        library = vim.api.nvim_get_runtime_file("", true),
+      },
+      -- Do not send telemetry data containing a randomized but unique identifier
+      telemetry = {
+        enable = false,
       },
     },
   },

@@ -1,3 +1,2 @@
-require("kbario.packer") 
-require("kbario.remap") 
+require("kbario.packer")
 require("kbario.set")
