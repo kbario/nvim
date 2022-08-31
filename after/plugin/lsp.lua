@@ -10,6 +10,7 @@ require("mason-lspconfig").setup()
 
 local lspkind = require("lspkind")
 local cmp = require("cmp")
+local my_system = require("after.plugin.system_info")
 
 cmp.setup({
   snippet = {
@@ -120,19 +121,25 @@ require("lspconfig").tsserver.setup(config())
 require("lspconfig").rust_analyzer.setup(config({
   cmd = { "rustup", "run", "nightly", "rust-analyzer" },
   --[[
-	settings = {
-		rust = {
-			unstable_features = true,
-			build_on_save = false,
-			all_features = true,
-		},
-	}
-	--]]
+  settings = {
+    rust = {
+      unstable_features = true,
+      build_on_save = false,
+      all_features = true,
+    },
+  }
+  --]]
 }))
 
+if my_system.is_mac then
+   Lua_cmd = { "/opt/homebrew/Cellar/lua-language-server/3.5.3/libexec/bin/lua-language-server" }
+else
+   Lua_cmd = { "lua-language-server" }
+end
+
 require("lspconfig").sumneko_lua.setup(config({
-    --cmd = { "/opt/homebrew/Cellar/lua-language-server/3.5.3/libexec/bin/lua-language-server" },
-    settings = {
+  cmd = Lua_cmd,
+  settings = {
     Lua = {
       runtime = {
         -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
