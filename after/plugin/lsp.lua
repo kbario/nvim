@@ -4,6 +4,8 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 local Remap = require("kbario.keymap")
 local nnoremap = Remap.nnoremap
 local inoremap = Remap.inoremap
+local spear = require("ng_spear.init").spear
+local homerows = require("kbario.what_layout")
 
 require("mason").setup()
 require("mason-lspconfig").setup()
@@ -49,37 +51,47 @@ cmp.setup({
   },
 })
 
+local client_attach = setmetatable({
+  angularls = function()
+    nnoremap("<leader>s"..homerows.first_right, function()
+      spear("component.ts")
+    end)
+    nnoremap("<leader>s"..homerows.second_right, function()
+      spear("component.html")
+    end)
+    nnoremap("<leader>s"..homerows.third_right, function()
+      spear("component.scss")
+    end)
+    nnoremap("<leader>s"..homerows.fourth_right, function()
+      spear("component.spec.ts")
+    end)
+  end
+}, {
+  __index = function()
+    return function() end
+  end,
+})
+
+local fancy_attach = function(client)
+  nnoremap("K", function() vim.lsp.buf.hover() end)
+  nnoremap("<leader>gd", function() vim.lsp.buf.definition() end)
+  -- vim.keymap.set("<leader>vws", function() vim.lsp.buf.workspace_symbol() end)
+  nnoremap("<leader>dg", function() vim.diagnostic.open_float() end)
+  nnoremap("<leader>gn", function() vim.diagnostic.goto_next() end)
+  nnoremap("<leader>gp", function() vim.diagnostic.goto_prev() end)
+  nnoremap("<leader>ga", function() vim.lsp.buf.code_action() end)
+  nnoremap("<leader>gr", function() vim.lsp.buf.references() end)
+  nnoremap("<leader>gi", function() vim.lsp.buf.implementation() end)
+  nnoremap("<leader>rn", function() vim.lsp.buf.rename() end)
+  inoremap("<C-h>", function() vim.lsp.buf.signature_help() end)
+  -- Attach any filetype specific options to the client
+  client_attach[client]()
+end
+
 local function config(_config)
   return vim.tbl_deep_extend("force", {
     capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
-    --[[on_attach = function()
-			nnoremap("gd", function() vim.lsp.buf.definition() end)
-			nnoremap("K", function() vim.lsp.buf.hover() end)
-			nnoremap("<leader>vws", function() vim.lsp.buf.workspace_symbol() end)
-			nnoremap("<leader>vd", function() vim.diagnostic.open_float() end)
-			nnoremap("[d", function() vim.diagnostic.goto_next() end)
-			nnoremap("]d", function() vim.diagnostic.goto_prev() end)
-			nnoremap("<leader>vca", function() vim.lsp.buf.code_action() end)
-			nnoremap("<leader>vrr", function() vim.lsp.buf.references() end)
-			nnoremap("<leader>vrn", function() vim.lsp.buf.rename() end)
-			inoremap("<C-h>", function() vim.lsp.buf.signature_help() end)
-		end,
-	}, _config or {})
-end]]
-
-    on_attach = function()
-      nnoremap("K", function() vim.lsp.buf.hover() end)
-      nnoremap("<leader>gd", function() vim.lsp.buf.definition() end)
-      -- vim.keymap.set("<leader>vws", function() vim.lsp.buf.workspace_symbol() end)
-      nnoremap("<leader>dg", function() vim.diagnostic.open_float() end)
-      nnoremap("<leader>gn", function() vim.diagnostic.goto_next() end)
-      nnoremap("<leader>gp", function() vim.diagnostic.goto_prev() end)
-      nnoremap("<leader>ga", function() vim.lsp.buf.code_action() end)
-      nnoremap("<leader>gr", function() vim.lsp.buf.references() end)
-      nnoremap("<leader>gi", function() vim.lsp.buf.implementation() end)
-      nnoremap("<leader>rn", function() vim.lsp.buf.rename() end)
-      inoremap("<C-h>", function() vim.lsp.buf.signature_help() end)
-    end,
+    on_attach = fancy_attach,
   }, _config or {})
 end
 
@@ -87,7 +99,7 @@ require("lspconfig").graphql.setup(config())
 
 require('lspconfig').bashls.setup(config())
 
---require('lspconfig').emmet_ls.setup(config())
+require('lspconfig').emmet_ls.setup(config())
 
 require("lspconfig").marksman.setup(config())
 
@@ -103,7 +115,7 @@ require("lspconfig").vimls.setup(config())
 
 --require("lspconfig").prismals.setup(config())
 
-require("lspconfig").html.setup(config())
+--require("lspconfig").html.setup(config())
 
 require("lspconfig").angularls.setup(config())
 
@@ -111,7 +123,7 @@ require("lspconfig").angularls.setup(config())
 
 require("lspconfig").tsserver.setup(config())
 
---require("lspconfig").ccls.setup(config())
+require("lspconfig").ccls.setup(config())
 
 --require("lspconfig").jedi_language_server.setup(config())
 
@@ -133,16 +145,24 @@ require("lspconfig").tsserver.setup(config())
 
 -- who even uses this?
 require("lspconfig").rust_analyzer.setup(config({
-  cmd = { "rustup", "run", "nightly", "rust-analyzer" },
-  --[[
-	settings = {
-		rust = {
-			unstable_features = true,
-			build_on_save = false,
-			all_features = true,
-		},
-	}
-	--]]
+  settings = {
+    ["rust-analyzer"] = {
+      imports = {
+        granularity = {
+          group = "module",
+        },
+        prefix = "self",
+      },
+      cargo = {
+        buildScripts = {
+          enable = true,
+        },
+      },
+      procMacro = {
+        enable = true
+      },
+    }
+  }
 }))
 
 require("lspconfig").sumneko_lua.setup(config({

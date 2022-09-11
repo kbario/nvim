@@ -8,6 +8,10 @@ local nmap = Remap.nmap
 -- prime
 inoremap("<C-c>", "<Esc>")
 
+nnoremap("<leader><leader>h", function()
+  print("Hello World!")
+end)
+
 -- easy find and replace that asks if you want to replace each found word
 nnoremap("<leader>fr",
   function()
@@ -34,7 +38,7 @@ nnoremap("<leader>r",
     vim.cmd(":%s/" .. fnd .. "/" .. rpl .. "/gc")
   end
 )
--- replace the word you cursor is on but doesn't ask to change one by one, 
+-- replace the word you cursor is on but doesn't ask to change one by one,
 -- it just replaces all found words
 nnoremap("<leader>R",
   function()

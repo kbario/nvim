@@ -17,3 +17,5 @@ vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 
 vim.g.mapleader = " "
+
+vim.env.keyboard_layout = 'colemak'
