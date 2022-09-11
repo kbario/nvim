@@ -10,7 +10,7 @@ require("mason-lspconfig").setup()
 
 local lspkind = require("lspkind")
 local cmp = require("cmp")
-local my_system = require("after.plugin.system_info")
+local my_system = require("kbario.system_info")
 
 cmp.setup({
   snippet = {
@@ -73,7 +73,7 @@ require("lspconfig").graphql.setup(config())
 
 require('lspconfig').bashls.setup(config())
 
---require('lspconfig').emmet_ls.setup(config())
+require('lspconfig').emmet_ls.setup(config())
 
 require("lspconfig").marksman.setup(config())
 
@@ -103,7 +103,9 @@ require("lspconfig").tsserver.setup(config())
 
 --require("lspconfig").solang.setup(config())
 
---require("lspconfig").cssls.setup(config())
+require("lspconfig").cssls.setup(config())
+
+require("lspconfig").cssmodules_ls.setup(config())
 
 --[[require("lspconfig").gopls.setup(config({
   cmd = { "gopls", "serve" },
