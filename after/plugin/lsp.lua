@@ -88,10 +88,10 @@ local fancy_attach = function(client)
   client_attach[client]()
 end
 
-local function config(_config)
+local function config(_config, client)
   return vim.tbl_deep_extend("force", {
     capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities()),
-    on_attach = fancy_attach,
+    on_attach = fancy_attach(client),
   }, _config or {})
 end
 
@@ -117,7 +117,7 @@ require("lspconfig").vimls.setup(config())
 
 --require("lspconfig").html.setup(config())
 
-require("lspconfig").angularls.setup(config())
+require("lspconfig").angularls.setup(config({}, "angularls"))
 
 --require("lspconfig").zls.setup(config())
 

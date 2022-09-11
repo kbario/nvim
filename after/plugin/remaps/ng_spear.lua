@@ -1,3 +1,4 @@
+--[[
 local Remap = require("kbario.keymap")
 local nnoremap = Remap.nnoremap
 local spear = require("ng_spear.spr").spear
@@ -24,3 +25,4 @@ nnoremap("<leader>s"..hr.fourth_right, function ()
   spear_spec()
 end)
 
+]]
