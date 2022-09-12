@@ -4,8 +4,9 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 local Remap = require("kbario.keymap")
 local nnoremap = Remap.nnoremap
 local inoremap = Remap.inoremap
-local spear = require("ng_spear.init").spear
+
 local homerows = require("kbario.what_layout")
+local spear = require("spear").spear
 
 require("mason").setup()
 require("mason-lspconfig").setup()
