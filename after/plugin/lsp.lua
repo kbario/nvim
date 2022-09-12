@@ -6,6 +6,7 @@ local nnoremap = Remap.nnoremap
 local inoremap = Remap.inoremap
 local spear = require("ng_spear.init").spear
 local homerows = require("kbario.what_layout")
+local my_system = require("kbario.system_info")
 
 require("mason").setup()
 require("mason-lspconfig").setup()
@@ -115,7 +116,7 @@ require("lspconfig").vimls.setup(config())
 
 --require("lspconfig").prismals.setup(config())
 
---require("lspconfig").html.setup(config())
+require("lspconfig").html.setup(config())
 
 require("lspconfig").angularls.setup(config({}, "angularls"))
 
@@ -129,7 +130,11 @@ require("lspconfig").ccls.setup(config())
 
 --require("lspconfig").solang.setup(config())
 
---require("lspconfig").cssls.setup(config())
+require("lspconfig").cssls.setup(config())
+
+require("lspconfig").jsonls.setup(config())
+
+require("lspconfig").cssmodules_ls.setup(config())
 
 --[[require("lspconfig").gopls.setup(config({
   cmd = { "gopls", "serve" },
@@ -165,8 +170,14 @@ require("lspconfig").rust_analyzer.setup(config({
   }
 }))
 
+if my_system.is_mac then
+   Lua_cmd = { "/opt/homebrew/Cellar/lua-language-server/3.5.3/libexec/bin/lua-language-server" }
+else
+   Lua_cmd = { "lua-language-server" }
+end
+
 require("lspconfig").sumneko_lua.setup(config({
-  cmd = { "/opt/homebrew/Cellar/lua-language-server/3.5.3/libexec/bin/lua-language-server" },
+  cmd = Lua_cmd,
   settings = {
     Lua = {
       runtime = {
