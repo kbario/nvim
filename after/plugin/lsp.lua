@@ -6,7 +6,7 @@ local nnoremap = Remap.nnoremap
 local inoremap = Remap.inoremap
 
 local homerows = require("kbario.what_layout")
-local spear = require("spear").spear
+local spear = require("ng_spear.init").spear
 local my_system = require("kbario.system_info")
 
 require("mason").setup()
@@ -56,16 +56,19 @@ cmp.setup({
 local client_attach = setmetatable({
   angularls = function()
     nnoremap("<leader>s"..homerows.first_right, function()
-      spear("component.ts")
+      spear(".component.ts")
     end)
     nnoremap("<leader>s"..homerows.second_right, function()
-      spear("component.html")
-    end)
+      spear(".component.html")
+   end)
     nnoremap("<leader>s"..homerows.third_right, function()
-      spear("component.scss")
+      spear({".component.css", ".component.scss"})
     end)
     nnoremap("<leader>s"..homerows.fourth_right, function()
-      spear("component.spec.ts")
+      spear(".component.spec.ts")
+    end)
+    nnoremap("<leader>sq", function()
+      spear({"adf.asdf", "asdfasdf", "asdf"})
     end)
   end
 }, {
