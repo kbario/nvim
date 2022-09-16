@@ -27,10 +27,11 @@ return require('packer').startup(function(use)
   use 'ThePrimeagen/harpoon'
 
   -- lualine
-  use {
-    'nvim-lualine/lualine.nvim',
-    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
-  }
+  use("nvim-lualine/lualine.nvim")
+  -- icons
+  use("kyazdani42/nvim-web-devicons")
+
+
   use("sbdchd/neoformat")
 
   -- mason is a lsp server manager (among other things)
@@ -64,6 +65,22 @@ return require('packer').startup(function(use)
   use("rcarriga/nvim-dap-ui")
   use("theHamsta/nvim-dap-virtual-text")
 
+  -- TODO highlighting
+  use {
+    "folke/todo-comments.nvim",
+    requires = "nvim-lua/plenary.nvim",
+    config = function()
+      require("todo-comments").setup()
+    end
+  }
+
+  -- beastmode commenting
+  use {
+    'numToStr/Comment.nvim',
+    config = function()
+      require('Comment').setup()
+    end
+  }
   -- kbario plugins
   use("kbario/spear.nvim")
 end)
