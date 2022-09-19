@@ -6,6 +6,7 @@ local nnoremap = Remap.nnoremap
 local inoremap = Remap.inoremap
 
 local homerows = require("kbario.what_layout")
+-- local spear = require("./../../../../Users/kylebario/luaProjects/spear.nvim/lua/spear").spear
 local spear = require("spear").spear
 local my_system = require("kbario.system_info")
 
@@ -67,6 +68,12 @@ local client_attach = setmetatable({
     nnoremap("<leader>s"..homerows.fourth_right, function()
       spear(".component.spec.ts")
     end)
+    --[[ nnoremap("<leader>sq", function()
+      spear(".component.asdf")
+    end)
+    nnoremap("<leader>sw", function()
+      spear({".component.asdf", ".component.arst"})
+    end) ]]
   end
 }, {
   __index = function()
@@ -135,7 +142,7 @@ require("lspconfig").cssls.setup(config())
 
 require("lspconfig").jsonls.setup(config())
 
-require("lspconfig").cssmodules_ls.setup(config())
+-- require("lspconfig").cssmodules_ls.setup(config())
 
 --[[require("lspconfig").gopls.setup(config({
   cmd = { "gopls", "serve" },
