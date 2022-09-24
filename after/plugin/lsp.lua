@@ -6,12 +6,14 @@ local nnoremap = Remap.nnoremap
 local inoremap = Remap.inoremap
 
 local homerows = require("kbario.what_layout")
--- local spear = require("./../../../../Users/kylebario/luaProjects/spear.nvim/lua/spear").spear
-local spear = require("spear").spear
 local my_system = require("kbario.system_info")
+local spear = require("spear.spear").spear
 
 require("mason").setup()
 require("mason-lspconfig").setup()
+require("spear").setup({
+  match = "first"
+})
 
 local lspkind = require("lspkind")
 local cmp = require("cmp")
@@ -57,10 +59,10 @@ cmp.setup({
 local client_attach = setmetatable({
   angularls = function()
     nnoremap("<leader>s"..homerows.first_right, function()
-      spear(".component.ts")
+      spear({ ".component.ts", ".component.html"}, { match = "swap" })
     end)
     nnoremap("<leader>s"..homerows.second_right, function()
-      spear(".component.html")
+      spear({ ".component.ts", ".component.html"})
    end)
     nnoremap("<leader>s"..homerows.third_right, function()
       spear({".component.css", ".component.scss"})

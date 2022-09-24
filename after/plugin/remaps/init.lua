@@ -30,24 +30,25 @@ nnoremap("<leader>fR",
 )
 
 -- replace word yous cursor is on and asks if you want to change each word
-nnoremap("<leader>r",
+--[[ nnoremap("<leader>r",
   function()
     local lines = vim.api.nvim_exec('echo expand("<cword>")', true)
     local fnd = lines
     local rpl = vim.fn.input "replace: "
     vim.cmd(":%s/" .. fnd .. "/" .. rpl .. "/gc")
   end
-)
+) ]]
+
 -- replace the word you cursor is on but doesn't ask to change one by one,
 -- it just replaces all found words
-nnoremap("<leader>R",
+--[[ nnoremap("<leader>R",
   function()
     local lines = vim.api.nvim_exec('echo expand("<cword>")', true)
     local fnd = lines
     local rpl = vim.fn.input "replace: "
     vim.cmd(":%s/" .. fnd .. "/" .. rpl .. "/g")
   end
-)
+) ]]
 
 -- format
 nnoremap("<leader>fm", function()

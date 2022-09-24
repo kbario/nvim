@@ -1,6 +1,16 @@
 vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
+  local local_use = function(plug_name, opts)
+    opts = opts or {}
+
+    if vim.fn.isdirectory(vim.fn.expand("~/luaProjects/" .. plug_name)) == 1 then
+      opts[1] = "~/luaProjects/" .. plug_name
+    end
+
+    use(opts)
+  end
+
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
 
@@ -82,5 +92,6 @@ return require('packer').startup(function(use)
     end
   }
   -- kbario plugins
-  use("kbario/spear.nvim")
+  -- use("kbario/spear.nvim")
+  local_use("spear.nvim")
 end)
