@@ -91,7 +91,18 @@ return require('packer').startup(function(use)
       require('Comment').setup()
     end
   }
+
+  -- markdown preview
+  use({ "iamcco/markdown-preview.nvim",
+    run = "cd app && npm install",
+    setup = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = { "markdown" }
+  })
+
   -- kbario plugins
   -- use("kbario/spear.nvim")
   local_use("spear.nvim")
+  local_use("homerows.nvim")
 end)

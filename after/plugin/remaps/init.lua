@@ -61,3 +61,11 @@ nnoremap("<leader><leader>s", "<cmd>source %<CR>")
 -- move lines up or down when highlighted in v-line mode
 vnoremap("J", ":m '>+1<CR>gv=gv")
 vnoremap("K", ":m '<-2<CR>gv=gv")
+
+-- indenting
+vnoremap(">", ">> gv")
+vnoremap("<", "<< gv")
+
+-- paste without loosing yank
+xnoremap("<leader>p", "\"_dP")
+
