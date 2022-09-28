@@ -120,6 +120,7 @@ local fancy_attach = function(client, file_type)
   inoremap("<C-h>", function() vim.lsp.buf.signature_help() end)
   nnoremap("<leader>mp", function() print("filetype:", file_type, "and client:", client) end)
   -- Attach any filetype specific options to the client
+  client_attach[client]()
   -- file_attach[file_type](client)
 end
 

@@ -1,4 +1,4 @@
-vim.cmd [[packadd packer.nvim]]
+vim.cmd("packadd packer.nvim")
 
 return require('packer').startup(function(use)
   local local_use = function(plug_name, opts)
@@ -31,6 +31,7 @@ return require('packer').startup(function(use)
   }
   use("nvim-treesitter/playground")
   use("romgrk/nvim-treesitter-context")
+  use("nvim-treesitter/nvim-treesitter-angular")
 
   -- harpoon
   use 'nvim-lua/plenary.nvim'
