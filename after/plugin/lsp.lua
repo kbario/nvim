@@ -16,17 +16,9 @@ local Remap = require("kbario.keymap")
 local nnoremap = Remap.nnoremap
 local inoremap = Remap.inoremap
 
--- kbario
-require("spear").setup({
-  match_pref = "first",
-  save_on_spear = false
-})
+-- kbario 
+local hr = require("homerows.homerows")
 local spear = require("spear.spear").spear
-local homerows = require("kbario.what_layout")
-
--- mason
-require("mason").setup()
-require("mason-lspconfig").setup()
 
 -- lsp
 local lspconfig = require("lspconfig")
@@ -73,16 +65,16 @@ cmp.setup({
 
 local client_attach = setmetatable({
   angularls = function()
-    nnoremap("<leader>s" .. homerows.first_right, function()
+    nnoremap("<leader>s" .. hr["r1"], function()
       spear(".component.ts")
     end)
-    nnoremap("<leader>s" .. homerows.second_right, function()
+    nnoremap("<leader>s" .. hr["r2"], function()
       spear(".component.html")
     end)
-    nnoremap("<leader>s" .. homerows.third_right, function()
+    nnoremap("<leader>s" .. hr["r3"], function()
       spear({ ".component.css", ".component.scss", ".component.sass" })
     end)
-    nnoremap("<leader>s" .. homerows.fourth_right, function()
+    nnoremap("<leader>s" .. hr["r4"], function()
       spear(".component.spec.ts")
     end)
   end
