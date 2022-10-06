@@ -3,6 +3,10 @@ local homerows = require("kbario.what_layout")
 
 local silent = { silent = true }
 
+require("harpoon").setup({
+  mark_branch = true
+})
+
 -- add mark
 nnoremap("<leader>ha", function ()
   require("harpoon.mark").add_file()
