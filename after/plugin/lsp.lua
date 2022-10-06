@@ -65,16 +65,16 @@ cmp.setup({
 
 local client_attach = setmetatable({
   angularls = function()
-    nnoremap("<leader>s" .. hr["r1"], function()
+    nnoremap("<leader>s" .. hr.r1, function()
       spear(".component.ts")
     end)
-    nnoremap("<leader>s" .. hr["r2"], function()
+    nnoremap("<leader>s" .. hr.r2, function()
       spear(".component.html")
     end)
-    nnoremap("<leader>s" .. hr["r3"], function()
+    nnoremap("<leader>s" .. hr.r3, function()
       spear({ ".component.css", ".component.scss", ".component.sass" })
     end)
-    nnoremap("<leader>s" .. hr["r4"], function()
+    nnoremap("<leader>s" .. hr.r4, function()
       spear(".component.spec.ts")
     end)
   end

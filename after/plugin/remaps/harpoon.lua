@@ -1,5 +1,5 @@
 local nnoremap = require("kbario.keymap").nnoremap
-local homerows = require("kbario.what_layout")
+local hr = require("homerows.homerows")
 
 local silent = { silent = true }
 
@@ -18,15 +18,15 @@ nnoremap("<leader>hu", function ()
 end, silent)
 
 -- navigate to the marks
-nnoremap("<leader>h"..homerows.first_right, function ()
+nnoremap("<leader>h"..hr.r1, function ()
   require("harpoon.ui").nav_file(1)
 end, silent)
-nnoremap("<leader>h"..homerows.second_right, function ()
+nnoremap("<leader>h"..hr.r2, function ()
   require("harpoon.ui").nav_file(2)
 end, silent)
-nnoremap("<leader>h"..homerows.third_right, function ()
+nnoremap("<leader>h"..hr.r3, function ()
   require("harpoon.ui").nav_file(3)
 end, silent)
-nnoremap("<leader>h"..homerows.fourth_right, function ()
+nnoremap("<leader>h"..hr.r4, function ()
   require("harpoon.ui").nav_file(4)
 end, silent)
