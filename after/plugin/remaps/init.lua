@@ -52,7 +52,7 @@ nnoremap("<leader>fR",
 
 -- format
 nnoremap("<leader>fm", function()
-  vim.lsp.buf.formatting()
+  vim.lsp.buf.format({ async = true })
 end)
 
 -- source this file
@@ -68,4 +68,3 @@ vnoremap("<", "<< gv")
 
 -- paste without loosing yank
 xnoremap("<leader>p", "\"_dP")
-
