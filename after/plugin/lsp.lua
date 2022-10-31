@@ -1,3 +1,4 @@
+local omnisharp = require "omnisharp"
 -- capabilities for lsp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -5,10 +6,13 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 -- get path to lua server based on operating system
 local my_system = require("kbario.system_info")
 local lua_cmd
+local omnisharp_cmd
 if my_system.is_mac then
   lua_cmd = { "/opt/homebrew/Cellar/lua-language-server/3.5.3/libexec/bin/lua-language-server" }
+  omnisharp_cmd = '/Users/kylebario/.local/share/nvim/mason/packages/omnisharp/OmniSharp.dll'
 else
   lua_cmd = { "lua-language-server" }
+  omnisharp_cmd = '/Users/kbario/AppData/Local/nvim-data/mason/packages/omnisharp/OmniSharp.dll'
 end
 
 -- the primeagen
@@ -37,20 +41,20 @@ cmp.setup({
     ["<C-d>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = cmp.mapping.complete(),
   }),
-  sources = {
+  sources = cmp.config.sources({
     { name = "nvim_lsp" },
     { name = "nvim_lua" },
     { name = "luasnip" },
     { name = "path" },
   }, {
     { name = "buffer" },
-  },
+  }),
   formatting = {
     format = lspkind.cmp_format {
       with_text = true,
       menu = {
-        buffer = "[buf]",
         nvim_lsp = "[LSP]",
+        buffer = "[buf]",
         nvim_lua = "[Lua]",
         path = "[path]",
         luasnip = "[snip]",
@@ -124,7 +128,7 @@ local setup_client = function(client, config)
   local file_type = vim.api.nvim_buf_get_option(0, "filetype")
 
   config = vim.tbl_deep_extend("force", {
-    capabilities = require("cmp_nvim_lsp").update_capabilities(
+    capabilities = require("cmp_nvim_lsp").default_capabilities(
       vim.lsp.protocol.make_client_capabilities()
     ),
     on_attach = fancy_attach(client, file_type),
@@ -134,26 +138,12 @@ local setup_client = function(client, config)
 end
 
 local clients = {
-  graphql = false,
-  bashls = false,
-  emmet_ls = {},
-  marksman = {},
-  tailwindcss = false,
-  svelte = false,
-  vuels = false,
-  vimls = false,
-  r_language_server = false,
-  prismals = false,
-  html = {},
   angularls = {},
-  zls = false,
-  tsserver = {},
+  bashls = false,
   ccls = false,
-  jedi_language_server = false,
-  solang = false,
   cssls = {},
-  jsonls = {},
   cssmodules_ls = false,
+  emmet_ls = {},
   gopls = {
     cmd = { "gopls", "serve" },
     settings = {
@@ -165,6 +155,16 @@ local clients = {
       },
     },
   },
+  graphql = false,
+  html = {},
+  jedi_language_server = false,
+  jsonls = {},
+  marksman = {},
+  omnisharp = {
+    cmd={ "dotnet", omnisharp_cmd }
+  },
+  prismals = false,
+  r_language_server = false,
   rust_analyzer = {
     settings = {
       ["rust-analyzer"] = {
@@ -185,6 +185,8 @@ local clients = {
       }
     }
   },
+  solang = false,
+  sqlls={}, 
   sumneko_lua = {
     cmd = lua_cmd,
     settings = {
@@ -208,6 +210,12 @@ local clients = {
       },
     },
   },
+  svelte = false,
+  tailwindcss = {},
+  tsserver = {},
+  vuels = false,
+  vimls = false,
+  zls = false,
 }
 
 -- unleash the hounds

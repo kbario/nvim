@@ -18,4 +18,4 @@ vim.opt.signcolumn = "yes"
 
 vim.g.mapleader = " "
 
-vim.env.keyboard_layout = 'colemak'
+vim.g.neoformat_try_node_exe = 1

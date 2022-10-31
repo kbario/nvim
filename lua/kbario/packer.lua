@@ -30,8 +30,6 @@ return require('packer').startup(function(use)
     run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
   }
   use("nvim-treesitter/playground")
-  use("romgrk/nvim-treesitter-context")
-  use("nvim-treesitter/nvim-treesitter-angular")
 
   -- harpoon
   use 'nvim-lua/plenary.nvim'
@@ -95,6 +93,9 @@ return require('packer').startup(function(use)
       }
     end
   }
+
+  -- prettier
+  use('numToStr/prettierrc.nvim')
 
   -- notifications and updates
   use('j-hui/fidget.nvim')
