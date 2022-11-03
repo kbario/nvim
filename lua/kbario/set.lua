@@ -19,3 +19,8 @@ vim.opt.signcolumn = "yes"
 vim.g.mapleader = " "
 
 vim.g.neoformat_try_node_exe = 1
+
+-- for deno
+vim.g.markdown_fenced_languages = {
+  "ts=typescript"
+}

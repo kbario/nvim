@@ -1,4 +1,3 @@
-local omnisharp = require "omnisharp"
 -- capabilities for lsp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -143,6 +142,7 @@ local clients = {
   ccls = false,
   cssls = {},
   cssmodules_ls = false,
+  denols = {},
   emmet_ls = {},
   gopls = {
     cmd = { "gopls", "serve" },

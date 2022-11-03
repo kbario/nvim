@@ -119,7 +119,7 @@ return require('packer').startup(function(use)
 
   -- kbario plugins
   use("kbario/spear.nvim")
-  use("homerows.nvim")
+  use("kbario/homerows.nvim")
   -- local_use("spear.nvim")
   -- local_use("homerows.nvim")
 end)
