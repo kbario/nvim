@@ -19,9 +19,9 @@ local Remap = require("kbario.keymap")
 local nnoremap = Remap.nnoremap
 local inoremap = Remap.inoremap
 
--- kbario 
+-- kbario
 local hr = require("homerows.homerows")
-local spear = require("spear.spear").spear
+local spear_bind = require("spear.spear").spear_bind
 
 -- lsp
 local lspconfig = require("lspconfig")
@@ -68,18 +68,10 @@ cmp.setup({
 
 local client_attach = setmetatable({
   angularls = function()
-    nnoremap("<leader>s" .. hr.r1, function()
-      spear(".component.ts")
-    end)
-    nnoremap("<leader>s" .. hr.r2, function()
-      spear(".component.html")
-    end)
-    nnoremap("<leader>s" .. hr.r3, function()
-      spear({ ".component.css", ".component.scss", ".component.sass" })
-    end)
-    nnoremap("<leader>s" .. hr.r4, function()
-      spear(".component.spec.ts")
-    end)
+    spear_bind("<leader>s" .. hr.r1, ".component.ts")
+    spear_bind("<leader>s" .. hr.r2, ".component.html")
+    spear_bind("<leader>s" .. hr.r3, { ".component.css", ".component.scss", ".component.sass" })
+    spear_bind("<leader>s" .. hr.r4, ".component.spec.ts")
   end
 }, {
   __index = function()
@@ -142,7 +134,7 @@ local clients = {
   ccls = false,
   cssls = {},
   cssmodules_ls = false,
-  denols = {},
+  denols = false,
   emmet_ls = {},
   gopls = {
     cmd = { "gopls", "serve" },
@@ -161,7 +153,7 @@ local clients = {
   jsonls = {},
   marksman = {},
   omnisharp = {
-    cmd={ "dotnet", omnisharp_cmd }
+    cmd = { "dotnet", omnisharp_cmd }
   },
   prismals = false,
   r_language_server = false,
@@ -186,7 +178,7 @@ local clients = {
     }
   },
   solang = false,
-  sqlls={}, 
+  sqlls = {},
   sumneko_lua = {
     cmd = lua_cmd,
     settings = {
