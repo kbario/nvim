@@ -14,20 +14,12 @@ nnoremap("<leader><leader>h", function()
 end, { desc = "prints hello world" })
 
 -- format
-<<<<<<< Updated upstream
-nnoremap("<leader>".. hr.l1t..hr.r1, function()
-=======
 nnoremap("<leader>" .. hr.l1t .. hr.r1, function()
->>>>>>> Stashed changes
   vim.lsp.buf.format({ async = true })
 end)
 
 -- easy find and replace that asks if you want to replace each found word
-<<<<<<< Updated upstream
-nnoremap("<leader>".. hr.l1t..hr.r2,
-=======
 nnoremap("<leader>" .. hr.l1t .. hr.r2,
->>>>>>> Stashed changes
   function()
     local fnd = vim.fn.input "find: "
     local rpl = vim.fn.input "replace: "
@@ -35,11 +27,7 @@ nnoremap("<leader>" .. hr.l1t .. hr.r2,
   end
 )
 -- find and replace that doesn't ask, it just replaces all found words
-<<<<<<< Updated upstream
-nnoremap("<leader>".. hr.l1t..hr.r2,
-=======
 nnoremap("<leader>" .. hr.l1t .. hr.r2,
->>>>>>> Stashed changes
   function()
     local fnd = vim.fn.input "find: "
     local rpl = vim.fn.input "replace: "
@@ -83,19 +71,9 @@ vnoremap("<", "<< gv")
 nnoremap("n", "nzzzv")
 nnoremap("N", "Nzzzv")
 
--- yank to clipbaord
-<<<<<<< Updated upstream
-nnoremap("<leader>y", "\"+y")
-vnoremap("<leader>y", "\"+y")
--- paste without loosing yank
-xnoremap("<leader>"..hr.r1, "\"_dP")
--- delete without loosing yank
-xnoremap("<leader>"..hr.r2, "\"_d")
-=======
 nnoremap("<leader>" .. hr.r1, "\"+y")
 vnoremap("<leader>" .. hr.r1, "\"+y")
 -- paste without loosing yank
 xnoremap("<leader>" .. hr.r2, "\"_dP")
 -- delete without loosing yank
 xnoremap("<leader>" .. hr.r3, "\"_d")
->>>>>>> Stashed changes
