@@ -210,7 +210,7 @@ local clients = {
   },
   svelte = false,
   tailwindcss = {},
-  tsserver = false,
+  tsserver = {},
   vuels = false,
   vimls = {},
   zls = false,
