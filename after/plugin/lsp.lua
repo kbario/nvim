@@ -68,10 +68,23 @@ cmp.setup({
 
 local client_attach = setmetatable({
   angularls = function()
-    spear_bind("<leader>s" .. hr.r1, ".component.ts")
-    spear_bind("<leader>s" .. hr.r2, ".component.html")
-    spear_bind("<leader>s" .. hr.r3, { ".component.css", ".component.scss", ".component.sass" })
-    spear_bind("<leader>s" .. hr.r4, ".component.spec.ts")
+    spear_bind(
+      "<leader>" .. hr.l3 .. hr.r1,
+      { ".component.ts", ".service.ts", ".pipe.ts" },
+      { match_pref = "next" }
+    )
+    spear_bind(
+      "<leader>" .. hr.l3 .. hr.r2,
+      ".component.html"
+    )
+    spear_bind(
+      "<leader>" .. hr.l3 .. hr.r3,
+      { ".component.css", ".component.scss", ".component.sass" }
+    )
+    spear_bind(
+      "<leader>" .. hr.l3 .. hr.r4,
+      { ".component.spec.ts", ".service.spec.ts", ".pipe.spec.ts" },
+      { match_pref = "next" })
   end
 }, {
   __index = function()
@@ -95,17 +108,17 @@ local file_attach = setmetatable({
 }) ]]
 
 local fancy_attach = function(client, file_type)
-  nnoremap("K", function() vim.lsp.buf.hover() end)
-  nnoremap("<leader>gd", function() vim.lsp.buf.definition() end)
-  nnoremap("<leader>dg", function() vim.diagnostic.open_float() end)
-  nnoremap("<leader>gn", function() vim.diagnostic.goto_next() end)
-  nnoremap("<leader>gp", function() vim.diagnostic.goto_prev() end)
-  nnoremap("<leader>ga", function() vim.lsp.buf.code_action() end)
-  nnoremap("<leader>gr", function() vim.lsp.buf.references() end)
-  nnoremap("<leader>gi", function() vim.lsp.buf.implementation() end)
-  nnoremap("<leader>rn", function() vim.lsp.buf.rename() end)
-  inoremap("<C-h>", function() vim.lsp.buf.signature_help() end)
-  nnoremap("<leader>mp", function() print("filetype:", file_type, "and client:", client) end)
+  nnoremap("K", function() vim.lsp.buf.hover() end, { desc = "lsp: hover info" })
+  nnoremap("<leader>gd", function() vim.lsp.buf.definition() end, { desc = "lsp: go to definition" })
+  nnoremap("<leader>dg", function() vim.diagnostic.open_float() end, { desc = "lsp: open float?" })
+  nnoremap("<leader>gn", function() vim.diagnostic.goto_next() end, { desc = "lsp: go to next error" })
+  nnoremap("<leader>gp", function() vim.diagnostic.goto_prev() end, { desc = "lsp: go to prev error" })
+  nnoremap("<leader>ga", function() vim.lsp.buf.code_action() end, { desc = "lsp: code actions" })
+  nnoremap("<leader>gr", function() vim.lsp.buf.references() end, { desc = "lsp: go to all references" })
+  nnoremap("<leader>gi", function() vim.lsp.buf.implementation() end, { desc = "lsp: go to implementation" })
+  nnoremap("<leader>rn", function() vim.lsp.buf.rename() end, { desc = "lsp: rename variable" })
+  inoremap("<C-h>", function() vim.lsp.buf.signature_help() end, { desc = "lsp: signature help?" })
+  nnoremap("<leader>mp", function() print("filetype:", file_type, "and client:", client) end, { desc = "custom: print filetype and client" })
   -- Attach any filetype specific options to the client
   client_attach[client]()
   -- file_attach[file_type](client)

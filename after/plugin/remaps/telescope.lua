@@ -1,24 +1,27 @@
 local Remap = require("kbario.keymap")
 local nnoremap = Remap.nnoremap
 
+local hr = require("homerows.homerows")
+
 nnoremap("<C-p>", ":Telescope<CR>")
 
-nnoremap("<leader>tf", function ()
+nnoremap("<leader>"..hr.l1..hr.r1, function ()
   require("telescope.builtin").find_files()
-end)
+end, { desc = "telescope: find files" })
 
-nnoremap("<leader>tk", function ()
-  require("telescope.builtin").keymaps()
-end)
+nnoremap("<leader>"..hr.l1..hr.r2, function ()
+  require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ")})
+end, { desc = "telescope: grep that ask for input" })
 
-nnoremap("<leader>tg", function()
-    require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ")})
-end)
+nnoremap("<leader>"..hr.l1..hr.R2, function ()
+  require('telescope.builtin').grep_string({ search = vim.fn.expand("<cword>")})
+end, { desc = "telescope: grep string you are on" })
 
-nnoremap("<leader>tG", function()
-    require('telescope.builtin').grep_string({ search = vim.fn.expand("<cword>")})
-end)
-
-nnoremap("<leader>tlg", function()
+nnoremap("<leader>"..hr.l1..hr.r3, function ()
     require('telescope.builtin').live_grep()
-end)
+end, { desc = "telescope: live grep" })
+
+nnoremap("<leader>"..hr.l1..hr.r4, function ()
+  require("telescope.builtin").keymaps()
+end, { desc = "telescope: keymaps" })
+
