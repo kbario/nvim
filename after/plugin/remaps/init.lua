@@ -1,3 +1,4 @@
+local hr = require("homerows.homerows")
 local Remap = require("kbario.keymap")
 local nnoremap = Remap.nnoremap
 local vnoremap = Remap.vnoremap
@@ -10,10 +11,15 @@ inoremap("<C-c>", "<Esc>")
 
 nnoremap("<leader><leader>h", function()
   print("Hello World!")
+end, { desc = "prints hello world" })
+
+-- format
+nnoremap("<leader>".. hr.l1t..hr.r1, function()
+  vim.lsp.buf.format({ async = true })
 end)
 
 -- easy find and replace that asks if you want to replace each found word
-nnoremap("<leader>fr",
+nnoremap("<leader>".. hr.l1t..hr.r2,
   function()
     local fnd = vim.fn.input "find: "
     local rpl = vim.fn.input "replace: "
@@ -21,7 +27,7 @@ nnoremap("<leader>fr",
   end
 )
 -- find and replace that doesn't ask, it just replaces all found words
-nnoremap("<leader>fR",
+nnoremap("<leader>".. hr.l1t..hr.r2,
   function()
     local fnd = vim.fn.input "find: "
     local rpl = vim.fn.input "replace: "
@@ -50,11 +56,6 @@ nnoremap("<leader>fR",
   end
 ) ]]
 
--- format
-nnoremap("<leader>fm", function()
-  vim.lsp.buf.format({ async = true })
-end)
-
 -- source this file
 nnoremap("<leader><leader>s", "<cmd>source %<CR>")
 
@@ -66,5 +67,14 @@ vnoremap("K", ":m '<-2<CR>gv=gv")
 vnoremap(">", ">> gv")
 vnoremap("<", "<< gv")
 
+-- have your next appear in the center of the screen
+nnoremap("n", "nzzzv")
+nnoremap("N", "Nzzzv")
+
+-- yank to clipbaord
+nnoremap("<leader>y", "\"+y")
+vnoremap("<leader>y", "\"+y")
 -- paste without loosing yank
-xnoremap("<leader>p", "\"_dP")
+xnoremap("<leader>"..hr.r1, "\"_dP")
+-- delete without loosing yank
+xnoremap("<leader>"..hr.r2, "\"_d")
