@@ -18,7 +18,7 @@ dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
 
--- require("theprimeagen.debugger.node");
+require("kbario.dap.node");
 
 nnoremap("<leader>dt", function()
   dapui.toggle()
@@ -90,3 +90,5 @@ end)
         }
     },
 })]]
+
+
