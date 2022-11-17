@@ -1,4 +1,2 @@
-require("spear").setup({
-  match_pref = "first",
-  save_on_spear = false,
-})
+require("spear").setup()
+require("homerows").setup()

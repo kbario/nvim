@@ -3,16 +3,7 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- get path to lua server based on operating system
-local my_system = require("kbario.system_info")
-local lua_cmd
-local omnisharp_cmd
-if my_system.is_mac then
-  lua_cmd = { "/opt/homebrew/Cellar/lua-language-server/3.5.3/libexec/bin/lua-language-server" }
-  omnisharp_cmd = '/Users/kylebario/.local/share/nvim/mason/packages/omnisharp/OmniSharp.dll'
-else
-  lua_cmd = { "lua-language-server" }
-  omnisharp_cmd = '/Users/kbario/AppData/Local/nvim-data/mason/packages/omnisharp/OmniSharp.dll'
-end
+-- local my_system = require("kbario.system_info")
 
 -- the primeagen
 local Remap = require("kbario.keymap")
@@ -27,6 +18,10 @@ local spear_bind = require("spear.spear").spear_bind
 local lspconfig = require("lspconfig")
 local lspkind = require("lspkind")
 local cmp = require("cmp")
+
+if not lspconfig or not lspkind or not cmp then
+  return
+end
 
 cmp.setup({
   snippet = {
@@ -143,31 +138,30 @@ end
 
 local clients = {
   angularls = {},
-  bashls = false,
+  bashls = {},
   ccls = false,
   cssls = {},
   cssmodules_ls = false,
   denols = false,
   emmet_ls = {},
-  gopls = {
-    cmd = { "gopls", "serve" },
-    settings = {
-      gopls = {
-        analyses = {
-          unusedparams = true,
-        },
-        staticcheck = true,
-      },
-    },
-  },
+  gopls = false,
+  -- gopls = {
+  --   cmd = { "gopls", "serve" },
+  --   settings = {
+  --     gopls = {
+  --       analyses = {
+  --         unusedparams = true,
+  --       },
+  --       staticcheck = true,
+  --     },
+  --   },
+  -- },
   graphql = false,
   html = {},
   jedi_language_server = false,
   jsonls = {},
   marksman = {},
-  omnisharp = {
-    cmd = { "dotnet", omnisharp_cmd }
-  },
+  omnisharp = {},
   prismals = false,
   r_language_server = false,
   rust_analyzer = {
@@ -193,7 +187,6 @@ local clients = {
   solang = false,
   sqlls = {},
   sumneko_lua = {
-    cmd = lua_cmd,
     settings = {
       Lua = {
         runtime = {
@@ -217,9 +210,9 @@ local clients = {
   },
   svelte = false,
   tailwindcss = {},
-  tsserver = {},
+  tsserver = false,
   vuels = false,
-  vimls = false,
+  vimls = {},
   zls = false,
 }
 
