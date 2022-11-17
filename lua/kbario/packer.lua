@@ -52,6 +52,8 @@ return require('packer').startup(function(use)
 
   use("neovim/nvim-lspconfig")
 
+  use("jose-elias-alvarez/typescript.nvim")
+
   -- lsp completion
   use("hrsh7th/nvim-cmp")
   use("hrsh7th/cmp-nvim-lsp")

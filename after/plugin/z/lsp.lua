@@ -18,6 +18,7 @@ local spear_bind = require("spear.spear").spear_bind
 local lspconfig = require("lspconfig")
 local lspkind = require("lspkind")
 local cmp = require("cmp")
+local ts = require("typescript")
 
 if not lspconfig or not lspkind or not cmp then
   return
@@ -80,6 +81,16 @@ local client_attach = setmetatable({
       "<leader>" .. hr.l3 .. hr.r4,
       { ".component.spec.ts", ".service.spec.ts", ".pipe.spec.ts" },
       { match_pref = "next" })
+  end,
+  tsserver = function()
+    nnoremap("<leader>" .. hr.l0 .. hr.r0b, function() ts.actions.fixAll() end,
+      { desc = "ts lsp: fix all" })
+    nnoremap("<leader>" .. hr.l0 .. hr.r2b, function() ts.actions.addMissingImports() end,
+      { desc = "ts lsp: add missing imports" })
+    nnoremap("<leader>" .. hr.l0 .. hr.r3b, function() ts.actions.organiseImports() end,
+      { desc = "ts lsp: organise imports" })
+    nnoremap("<leader>" .. hr.l0 .. hr.r4b, function() ts.actions.removeUnused() end,
+      { desc = "ts lsp: remove unused" })
   end
 }, {
   __index = function()
@@ -102,18 +113,29 @@ local file_attach = setmetatable({
   end,
 }) ]]
 
-local fancy_attach = function(client, file_type)
-  nnoremap("K", function() vim.lsp.buf.hover() end, { desc = "lsp: hover info" })
-  nnoremap("<leader>"..hr.l0..hr.r1, function() vim.lsp.buf.definition() end, { desc = "lsp: go to definition" })
-  nnoremap("<leader>"..hr.l0..hr.r2, function() vim.lsp.buf.implementation() end, { desc = "lsp: go to implementation" })
-  nnoremap("<leader>"..hr.l0..hr.r3, function() vim.lsp.buf.references() end, { desc = "lsp: go to all references" })
-  nnoremap("<leader>"..hr.l0..hr.r4, function() vim.lsp.buf.code_action() end, { desc = "lsp: code actions" })
-  nnoremap("<leader>"..hr.l0..hr.r1t, function() vim.diagnostic.goto_next() end, { desc = "lsp: go to next error" })
-  nnoremap("<leader>"..hr.l0..hr.r2t, function() vim.diagnostic.goto_prev() end, { desc = "lsp: go to prev error" })
-  nnoremap("<leader>"..hr.l0..hr.r3t, function() vim.diagnostic.open_float() end, { desc = "lsp: open float?" })
-  nnoremap("<leader>"..hr.l0..hr.r1b, function() vim.lsp.buf.rename() end, { desc = "lsp: rename variable" })
-  nnoremap("<leader>"..hr.l0..hr.r4b, function() print("filetype:", file_type, "and client:", client) end, { desc = "custom: print filetype and client" })
-  inoremap("<C-h>", function() vim.lsp.buf.signature_help() end, { desc = "lsp: signature help?" })
+local fancy_attach = function(client)
+  nnoremap("K", function() vim.lsp.buf.hover() end,
+    { desc = "lsp: hover info" })
+  nnoremap("<leader>" .. hr.l0 .. hr.r1, function() vim.lsp.buf.definition() end,
+    { desc = "lsp: go to definition" })
+  nnoremap("<leader>" .. hr.l0 .. hr.r2, function() vim.lsp.buf.implementation() end,
+    { desc = "lsp: go to implementation" })
+  nnoremap("<leader>" .. hr.l0 .. hr.r3, function() vim.lsp.buf.references() end,
+    { desc = "lsp: go to all references" })
+  nnoremap("<leader>" .. hr.l0 .. hr.r4, function() vim.lsp.buf.code_action() end,
+    { desc = "lsp: code actions" })
+  nnoremap("<leader>" .. hr.l0 .. hr.r1t, function() vim.diagnostic.goto_next() end,
+    { desc = "lsp: go to next error" })
+  nnoremap("<leader>" .. hr.l0 .. hr.r2t, function() vim.diagnostic.goto_prev() end,
+    { desc = "lsp: go to prev error" })
+  nnoremap("<leader>" .. hr.l0 .. hr.r3t, function() vim.diagnostic.open_float() end,
+    { desc = "lsp: open float?" })
+  nnoremap("<leader>" .. hr.l0 .. hr.r1b, function() vim.lsp.buf.rename() end,
+    { desc = "lsp: rename variable" })
+  -- nnoremap("<leader>" .. hr.l0 .. hr.r4b, function() print("filetype:", file_type, "and client:", client) end,
+  --   { desc = "custom: print filetype and client" })
+  inoremap("<C-h>", function() vim.lsp.buf.signature_help() end,
+    { desc = "lsp: signature help?" })
   -- Attach any filetype specific options to the client
   client_attach[client]()
   -- file_attach[file_type](client)
@@ -124,16 +146,19 @@ local setup_client = function(client, config)
     return
   end
 
-  local file_type = vim.api.nvim_buf_get_option(0, "filetype")
-
   config = vim.tbl_deep_extend("force", {
     capabilities = require("cmp_nvim_lsp").default_capabilities(
       vim.lsp.protocol.make_client_capabilities()
     ),
-    on_attach = fancy_attach(client, file_type),
+    on_attach = fancy_attach(client),
   }, config or {})
 
-  lspconfig[client].setup(config)
+  if client == 'tsserver' then
+    require("typescript").setup({ server = config })
+  else
+    lspconfig[client].setup(config)
+  end
+
 end
 
 local clients = {
