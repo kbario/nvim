@@ -5,23 +5,22 @@ local hr = require("homerows.homerows")
 
 nnoremap("<C-p>", ":Telescope<CR>")
 
-nnoremap("<leader>"..hr.l1..hr.r1, function ()
+nnoremap("<leader>" .. hr.l1 .. hr.r1, function()
   require("telescope.builtin").find_files()
 end, { desc = "telescope: find files" })
 
-nnoremap("<leader>"..hr.l1..hr.r2, function ()
-  require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ")})
+nnoremap("<leader>" .. hr.l1 .. hr.r2, function()
+  require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For > ") })
 end, { desc = "telescope: grep that ask for input" })
 
-nnoremap("<leader>"..hr.l1..hr.R2, function ()
-  require('telescope.builtin').grep_string({ search = vim.fn.expand("<cword>")})
+nnoremap("<leader>" .. hr.l1 .. hr.R2, function()
+  require('telescope.builtin').grep_string({ search = vim.fn.expand("<cword>") })
 end, { desc = "telescope: grep string you are on" })
 
-nnoremap("<leader>"..hr.l1..hr.r3, function ()
-    require('telescope.builtin').live_grep()
+nnoremap("<leader>" .. hr.l1 .. hr.r3, function()
+  require('telescope.builtin').live_grep()
 end, { desc = "telescope: live grep" })
 
-nnoremap("<leader>"..hr.l1..hr.r4, function ()
+nnoremap("<leader>" .. hr.l1 .. hr.r4, function()
   require("telescope.builtin").keymaps()
 end, { desc = "telescope: keymaps" })
-

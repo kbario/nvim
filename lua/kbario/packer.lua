@@ -119,6 +119,14 @@ return require('packer').startup(function(use)
     ft = { "markdown" }
   })
 
+  use {
+    'phaazon/mind.nvim',
+    branch = 'v2.2',
+    requires = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require 'mind'.setup()
+    end
+  }
   -- kbario plugins
   use("kbario/spear.nvim")
   use("kbario/homerows.nvim")

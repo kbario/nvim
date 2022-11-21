@@ -87,7 +87,7 @@ local client_attach = setmetatable({
       { desc = "ts lsp: fix all" })
     nnoremap("<leader>" .. hr.l0 .. hr.r2b, function() ts.actions.addMissingImports() end,
       { desc = "ts lsp: add missing imports" })
-    nnoremap("<leader>" .. hr.l0 .. hr.r3b, function() ts.actions.organiseImports() end,
+    nnoremap("<leader>" .. hr.l0 .. hr.r3b, function() ts.actions.organizeImports() end,
       { desc = "ts lsp: organise imports" })
     nnoremap("<leader>" .. hr.l0 .. hr.r4b, function() ts.actions.removeUnused() end,
       { desc = "ts lsp: remove unused" })
