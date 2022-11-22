@@ -80,7 +80,6 @@ nnoremap("<leader>" .. hr.R1, "\"+Y", { desc = "copy to clipbaord" })
 vnoremap("<leader>" .. hr.r1, "\"+y", { desc = "copy to clipbaord" })
 vnoremap("<leader>" .. hr.R1, "\"+Y", { desc = "copy to clipbaord" })
 -- paste without loosing yank
-xnoremap("<leader>" .. hr.r2, "\"_dp", { desc = "paste without loosing yank" })
-xnoremap("<leader>" .. hr.R2, "\"_dP", { desc = "paste without loosing yank" })
+xnoremap("<leader>" .. hr.r2, "\"_dP", { desc = "paste without loosing yank" })
 -- delete without loosing yank
 xnoremap("<leader>" .. hr.r3, "\"_d", { desc = "delete without loosing yank" })
