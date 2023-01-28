@@ -1,6 +1,7 @@
 local dap = require("dap")
 local dapui = require("dapui")
 local daptext = require("nvim-dap-virtual-text")
+local hr = require("homerows.homerows")
 
 local remap = require("kbario.keymap")
 local nnoremap = remap.nnoremap
@@ -9,7 +10,7 @@ daptext.setup()
 dapui.setup()
 
 dap.listeners.after.event_initialized["dapui_config"] = function()
-  dapui.open(1)
+  dapui.open()
 end
 dap.listeners.before.event_terminated["dapui_config"] = function()
   dapui.close()
@@ -18,36 +19,34 @@ dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
 
-require("kbario.dap.node");
-
-nnoremap("<leader>dt", function()
+nnoremap(vim.g.mapleader .. hr.l1b .. hr.l1b, function()
   dapui.toggle()
-end)
+end, { desc = 'dap ui: toggle dap ui' })
 --[[nnoremap("<End>", function()
   dapui.toggle(2)
   end)]]
 
-nnoremap("<Leader>dn", function()
-  dap.continue()
-end)
-nnoremap("<Leader>de", function()
+nnoremap(vim.g.mapleader .. hr.l1b .. hr.r1, function()
   dap.step_over()
-end)
-nnoremap("<Leader>di", function()
+end, { desc = 'dap: step over' })
+nnoremap(vim.g.mapleader .. hr.l1b .. hr.r2, function()
   dap.step_into()
-end)
-nnoremap("<Leader>do", function()
+end, { desc = 'dap: step into' })
+nnoremap(vim.g.mapleader .. hr.l1b .. hr.r3, function()
   dap.step_out()
-end)
-nnoremap("<Leader>db", function()
+end, { desc = 'dap: step out' })
+nnoremap(vim.g.mapleader .. hr.l1b .. hr.r4, function()
+  dap.continue()
+end, { desc = 'dap: continue' })
+nnoremap(vim.g.mapleader .. hr.l1b .. hr.r1b, function()
   dap.toggle_breakpoint()
-end)
-nnoremap("<Leader>dB", function()
+end, { desc = 'dap: toggle breakpoint' })
+nnoremap(vim.g.mapleader .. hr.l1b .. hr.R1b, function()
   dap.set_breakpoint(vim.fn.input('Breakpoint condition: '))
-end)
-nnoremap("<leader>dc", function()
+end, { desc = 'dap: set conditional breakpoint' })
+nnoremap(vim.g.mapleader .. hr.l1b .. hr.r2, function()
   dap.run_to_cursor()
-end)
+end, { desc = 'dap: run to cursor' })
 
 --[[ require("nvim-dap-virtual-text").setup {
   enabled = true,
@@ -91,4 +90,6 @@ end)
     },
 })]]
 
-
+require("kbario.dap.bash")
+require("kbario.dap.chrome")
+-- require("kbario.dap.node")

@@ -4,6 +4,8 @@ local nnoremap = Remap.nnoremap
 local vnoremap = Remap.vnoremap
 local inoremap = Remap.inoremap
 local xnoremap = Remap.xnoremap
+
+local pth = require("plenary.path")
 -- local nmap = Remap.nmap
 
 -- prime
@@ -16,7 +18,25 @@ end, { desc = "prints hello world" })
 -- format
 nnoremap("<leader>" .. hr.l1t .. hr.r1, function()
   vim.lsp.buf.format({ async = true })
-end, { desc = "lsp: format document"})
+end, { desc = "lsp: format document" })
+
+nnoremap("<leader>" .. hr.l1t .. hr.R1, function()
+  local cdub = vim.loop.cwd()
+  local jsbeautifyrc = pth:new(string.format("%s/.jsbeautifyrc.json", cdub))
+  local prettierrc = pth:new(string.format("%s/.prettierrc", cdub))
+
+  local file = pth:new(vim.api.nvim_buf_get_name(0)):make_relative(cdub)
+  local filetype = vim.fn.fnamemodify(file, ":e")
+
+  if jsbeautifyrc:exists() and filetype == "html" then
+    vim.cmd(string.format(":!js-beautify --config %s --replace %s", jsbeautifyrc.filename, file))
+  elseif prettierrc:exists() and filetype == "ts" then
+    vim.cmd(string.format(":!prettier --write --config %s \"%s\"", prettierrc.filename, file))
+  else
+    print("None Done")
+  end
+  vim.cmd(":w")
+end, { desc = "hub formatting" })
 
 -- easy find and replace that asks if you want to replace each found word
 nnoremap("<leader>" .. hr.l1t .. hr.r2,
