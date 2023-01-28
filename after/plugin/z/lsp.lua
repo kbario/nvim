@@ -1,4 +1,4 @@
--- capabilities for lsp
+-- capabilities for lsplsplsp
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
@@ -167,6 +167,7 @@ end
 
 local clients = {
   angularls = {},
+  astro = {},
   bashls = {},
   ccls = false,
   cssls = {},

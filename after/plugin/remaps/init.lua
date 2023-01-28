@@ -1,4 +1,5 @@
 local hr = require("homerows.homerows")
+-- local pth = require("plenary.path")
 local Remap = require("kbario.keymap")
 local nnoremap = Remap.nnoremap
 local vnoremap = Remap.vnoremap
@@ -48,7 +49,7 @@ nnoremap("<leader>" .. hr.l1t .. hr.r2,
   { desc = "find and replace with individual confirm" }
 )
 -- find and replace that doesn't ask, it just replaces all found words
-nnoremap("<leader>" .. hr.l1t .. hr.r2,
+nnoremap("<leader>" .. hr.l1t .. hr.R2,
   function()
     local fnd = vim.fn.input "find: "
     local rpl = vim.fn.input "replace: "

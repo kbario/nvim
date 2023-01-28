@@ -111,7 +111,11 @@ return require('packer').startup(function(use)
   }
 
   -- prettier
-  use('numToStr/prettierrc.nvim')
+  -- use('numToStr/prettierrc.nvim')
+  -- use { "prettier/vim-prettier",
+  --   run = 'npm install --frozen-lockfile --production',
+  --   ft = { 'javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml',
+  --     'html' } }
 
   -- notifications and updates
   use('j-hui/fidget.nvim')

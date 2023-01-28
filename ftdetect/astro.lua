@@ -1,7 +1,3 @@
-require("kbario.packer")
-require("kbario.set")
-require("kbario.dap")
-
 vim.filetype.add({
     extension = {
         astro = "astro"
