@@ -14,6 +14,9 @@ return require('packer').startup(function(use)
   -- Packer can manage itself
   use 'wbthomason/packer.nvim'
 
+  -- everything relies on
+  use 'nvim-lua/plenary.nvim'
+
   -- colours
   use 'folke/tokyonight.nvim'
   use 'joshdick/onedark.vim'
@@ -23,25 +26,33 @@ return require('packer').startup(function(use)
     'nvim-telescope/telescope.nvim', branch = '0.1.x',
     requires = { { 'nvim-lua/plenary.nvim' } }
   }
+  use("nvim-telescope/telescope-dap.nvim")
 
   -- treesitter
   use {
     'nvim-treesitter/nvim-treesitter',
-    run = function() require('nvim-treesitter.install').update({ with_sync = true }) end,
+    run = function()
+      local arst = require('nvim-treesitter.install').update({ with_sync = true })
+      arst()
+    end,
   }
   use("nvim-treesitter/playground")
 
-  -- harpoon
-  use 'nvim-lua/plenary.nvim'
+  -- the Primeagen
   use 'ThePrimeagen/harpoon'
+  use {
+    "ThePrimeagen/refactoring.nvim",
+    requires = {
+      { "nvim-lua/plenary.nvim" },
+      { "nvim-treesitter/nvim-treesitter" }
+    }
+  }
+  use("ThePrimeagen/vim-be-good")
 
   -- lualine
   use("nvim-lualine/lualine.nvim")
   -- icons
   use("kyazdani42/nvim-web-devicons")
-
-
-  use("sbdchd/neoformat")
 
   -- mason is a lsp server manager (among other things)
   -- makes it easy to manage the LSPs on your system
@@ -50,11 +61,9 @@ return require('packer').startup(function(use)
     "williamboman/mason-lspconfig.nvim",
   }
 
-  use("neovim/nvim-lspconfig")
-
-  use("jose-elias-alvarez/typescript.nvim")
-
   -- lsp completion
+  use("neovim/nvim-lspconfig")
+  use("jose-elias-alvarez/typescript.nvim")
   use("hrsh7th/nvim-cmp")
   use("hrsh7th/cmp-nvim-lsp")
   use("hrsh7th/cmp-nvim-lua")
@@ -69,12 +78,17 @@ return require('packer').startup(function(use)
   use("L3MON4D3/LuaSnip")
   use("saadparwaiz1/cmp_luasnip")
 
-  use("ThePrimeagen/vim-be-good")
 
   -- debugging
   use("mfussenegger/nvim-dap")
   use("rcarriga/nvim-dap-ui")
   use("theHamsta/nvim-dap-virtual-text")
+  use { "mxsdev/nvim-dap-vscode-js", requires = { "mfussenegger/nvim-dap" } }
+  use {
+    "microsoft/vscode-js-debug",
+    opt = true,
+    run = "npm install --legacy-peer-deps && npm run compile"
+  }
 
   -- TODO highlighting
   use {
@@ -127,6 +141,36 @@ return require('packer').startup(function(use)
       require 'mind'.setup()
     end
   }
+
+  -- git
+  use("mbbill/undotree")
+  use {
+    'TimUntersberger/neogit',
+    requires = 'nvim-lua/plenary.nvim',
+    config = function()
+      require('neogit').setup {}
+    end
+  }
+  use {
+    'pwntester/octo.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+      'kyazdani42/nvim-web-devicons',
+    },
+    config = function()
+      require "octo".setup()
+    end
+  }
+
+  use({
+    "kylechui/nvim-surround",
+    tag = "*", -- Use for stability; omit to use `main` branch for the latest features
+  })
+
+  -- python
+  use("ahmedkhalf/jupyter-nvim")
+
   -- kbario plugins
   use("kbario/spear.nvim")
   use("kbario/homerows.nvim")

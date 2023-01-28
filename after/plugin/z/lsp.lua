@@ -65,20 +65,24 @@ cmp.setup({
 local client_attach = setmetatable({
   angularls = function()
     spear_bind(
-      "<leader>" .. hr.l3 .. hr.r1,
+      vim.g.mapleader .. hr.l3 .. hr.r0,
+      { ".module.ts" }
+    )
+    spear_bind(
+      vim.g.mapleader .. hr.l3 .. hr.r1,
       { ".component.ts", ".service.ts", ".pipe.ts" },
       { match_pref = "next" }
     )
     spear_bind(
-      "<leader>" .. hr.l3 .. hr.r2,
+      vim.g.mapleader .. hr.l3 .. hr.r2,
       ".component.html"
     )
     spear_bind(
-      "<leader>" .. hr.l3 .. hr.r3,
+      vim.g.mapleader .. hr.l3 .. hr.r3,
       { ".component.css", ".component.scss", ".component.sass" }
     )
     spear_bind(
-      "<leader>" .. hr.l3 .. hr.r4,
+      vim.g.mapleader .. hr.l3 .. hr.r4,
       { ".component.spec.ts", ".service.spec.ts", ".pipe.spec.ts" },
       { match_pref = "next" })
   end,
@@ -185,10 +189,11 @@ local clients = {
   html = {},
   jedi_language_server = false,
   jsonls = {},
-  marksman = {},
+  marksman = false,
   omnisharp = {},
   prismals = false,
   r_language_server = false,
+  remark_ls = {},
   rust_analyzer = {
     settings = {
       ["rust-analyzer"] = {
