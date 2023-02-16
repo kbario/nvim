@@ -1,6 +1,7 @@
 vim.cmd("packadd packer.nvim")
 
 return require('packer').startup(function(use)
+
   local local_use = function(plug_name, opts)
     opts = opts or {}
 
@@ -32,8 +33,7 @@ return require('packer').startup(function(use)
   use {
     'nvim-treesitter/nvim-treesitter',
     run = function()
-      local arst = require('nvim-treesitter.install').update({ with_sync = true })
-      arst()
+      require('nvim-treesitter.install').update({ with_sync = true })
     end,
   }
   use("nvim-treesitter/playground")
@@ -43,8 +43,7 @@ return require('packer').startup(function(use)
   use {
     "ThePrimeagen/refactoring.nvim",
     requires = {
-      { "nvim-lua/plenary.nvim" },
-      { "nvim-treesitter/nvim-treesitter" }
+      "nvim-lua/plenary.nvim", "nvim-treesitter/nvim-treesitter"
     }
   }
   use("ThePrimeagen/vim-be-good")
@@ -111,7 +110,7 @@ return require('packer').startup(function(use)
   }
 
   -- prettier
-  -- use('numToStr/prettierrc.nvim')
+  use('numToStr/prettierrc.nvim')
   -- use { "prettier/vim-prettier",
   --   run = 'npm install --frozen-lockfile --production',
   --   ft = { 'javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml',
@@ -147,6 +146,7 @@ return require('packer').startup(function(use)
   }
 
   -- git
+  use { "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" }
   use("mbbill/undotree")
   use {
     'TimUntersberger/neogit',
