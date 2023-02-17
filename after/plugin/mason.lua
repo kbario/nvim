@@ -11,3 +11,12 @@ require("mason").setup()
 require("mason-lspconfig").setup({
   ensure_installed = clients_to_install
 })
+
+require("mason-null-ls").setup({
+    automatic_setup = true,
+    ensure_installed = {
+      "sqlfluff", "sql_formatter", "stylua", "codespell", "prettier", "prettierd", "eslint_d"
+    }
+})
+require("null-ls").setup()
+require 'mason-null-ls'.setup_handlers()

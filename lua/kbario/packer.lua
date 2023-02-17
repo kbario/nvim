@@ -60,6 +60,12 @@ return require('packer').startup(function(use)
     "williamboman/mason-lspconfig.nvim",
   }
 
+  use {
+    "jose-elias-alvarez/null-ls.nvim",
+    "jay-babu/mason-null-ls.nvim",
+  }
+
+
   -- lsp completion
   use("neovim/nvim-lspconfig")
   use("jose-elias-alvarez/typescript.nvim")
@@ -82,12 +88,12 @@ return require('packer').startup(function(use)
   use("mfussenegger/nvim-dap")
   use("rcarriga/nvim-dap-ui")
   use("theHamsta/nvim-dap-virtual-text")
-  use { "mxsdev/nvim-dap-vscode-js", requires = { "mfussenegger/nvim-dap" } }
-  use {
-    "microsoft/vscode-js-debug",
-    opt = true,
-    run = "npm install --legacy-peer-deps && npm run compile"
-  }
+  -- use { "mxsdev/nvim-dap-vscode-js", requires = { "mfussenegger/nvim-dap" } }
+  -- use {
+  --   "microsoft/vscode-js-debug",
+  --   opt = true,
+  --   run = "npm install --legacy-peer-deps && npm run compile"
+  -- }
 
   -- TODO highlighting
   use {
@@ -108,6 +114,8 @@ return require('packer').startup(function(use)
       }
     end
   }
+
+  require('packer').use { 'mhartington/formatter.nvim' }
 
   -- prettier
   use('numToStr/prettierrc.nvim')
@@ -148,6 +156,8 @@ return require('packer').startup(function(use)
   -- git
   use { "sindrets/diffview.nvim", requires = "nvim-lua/plenary.nvim" }
   use("mbbill/undotree")
+  -- use('tpope/vim-fugitive')
+  -- use('kdheepak/lazygit.nvim')
   use {
     'TimUntersberger/neogit',
     requires = 'nvim-lua/plenary.nvim',
@@ -173,11 +183,31 @@ return require('packer').startup(function(use)
   })
 
   -- python
-  use("ahmedkhalf/jupyter-nvim")
+  use {
+    "ahmedkhalf/jupyter-nvim",
+    run = ":UpdateRemotePlugins",
+    config = function()
+      require("jupyter-nvim").setup()
+    end
+  }
 
   -- kbario plugins
-  use("kbario/spear.nvim")
-  use("kbario/homerows.nvim")
+  use {
+    "kbario/spear.nvim",
+    config = function()
+      require("spear").setup()
+    end
+  }
+  use { "kbario/homerows.nvim",
+    config = function()
+      require("homerows").setup({
+        pref = { "programmers_dvorak", "colemak_dh" },
+        add_print_keymap = true,
+        add_change_keymap = true
+      })
+    end
+  }
+
   -- local_use("spear.nvim")
   -- local_use("homerows.nvim")
 end)

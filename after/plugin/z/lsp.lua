@@ -10,7 +10,7 @@ local clients = require('kbario.clients')
 -- the primeagen
 local Remap = require("kbario.keymap")
 local nnoremap = Remap.nnoremap
-local inoremap = Remap.inoremap
+-- local inoremap = Remap.inoremap
 
 -- kbario
 local hr = require("homerows.homerows")
@@ -86,7 +86,8 @@ local client_attach = setmetatable({
     spear_bind(
       vim.g.mapleader .. hr.l3 .. hr.r4,
       { ".component.spec.ts", ".service.spec.ts", ".pipe.spec.ts" },
-      { match_pref = "next" })
+      { match_pref = "next" }
+    )
   end,
   tsserver = function()
     nnoremap("<leader>" .. hr.l0 .. hr.r0b, function() ts.actions.fixAll() end,
@@ -103,23 +104,9 @@ local client_attach = setmetatable({
     return function() end
   end,
 })
---[[
-local file_attach = setmetatable({
-  markdown = function()
-    nnoremap("<leader>ms", function()
-      vim.api.nvim_command(":MarkdownPreview")
-    end)
-    nnoremap("<leader>mq", function()
-      vim.api.nvim_command(":MarkdownPreviewStop")
-    end)
-  end,
-}, {
-  __index = function()
-    return function() end
-  end,
-}) ]]
 
 local fancy_attach = function(client)
+  -- print(client, bufnr, client_name)
   nnoremap("K", function() vim.lsp.buf.hover() end,
     { desc = "lsp: hover info" })
   nnoremap("<leader>" .. hr.l0 .. hr.r1, function() vim.lsp.buf.definition() end,
@@ -138,13 +125,10 @@ local fancy_attach = function(client)
     { desc = "lsp: open float?" })
   nnoremap("<leader>" .. hr.l0 .. hr.r1b, function() vim.lsp.buf.rename() end,
     { desc = "lsp: rename variable" })
-  -- nnoremap("<leader>" .. hr.l0 .. hr.r4b, function() print("filetype:", file_type, "and client:", client) end,
-  --   { desc = "custom: print filetype and client" })
-  inoremap("<C-h>", function() vim.lsp.buf.signature_help() end,
-    { desc = "lsp: signature help?" })
+  -- inoremap("<C-h>", function() vim.lsp.buf.signature_help() end,
+  --   { desc = "lsp: signature help?" })
   -- Attach any filetype specific options to the client
   client_attach[client]()
-  -- file_attach[file_type](client)
 end
 
 local setup_client = function(client, config)
