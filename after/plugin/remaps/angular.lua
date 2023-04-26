@@ -9,12 +9,13 @@ nnoremap(vim.g.mapleader .. hr.l4t .. hr.l4t, function()
   local module_path = vim.fn.fnamemodify(module, ':p:.:h'):gsub('src/app/', ''):gsub('src\\app\\', '')
   module = vim.fn.fnamemodify(module, ':p:.'):gsub('src/app/', ''):gsub('src\\app\\', '')
 
+  local type = vim.fn.input("file type (c, s, p)> ")
   local name = vim.fn.input("file name > ")
 
   local path = vim.fn.input("file path from " .. module_path .. "/ not including name > ")
-  path = pth:new(string.format('%s/%s/%s', module_path, path, name)).filename
-  print(':!ng g c ' .. path .. ' -m ' .. module)
-  vim.cmd(':!ng g c ' .. path .. ' -m ' .. module)
+  path = pth:new(string.format('%s/%s/%s/%s', module_path, path, name, name)).filename
+  print(string.format(':!ng g %s %s -m %s', type, path, module))
+  vim.cmd(string.format(':!ng g %s %s -m %s', type, path, module))
 
   -- local cdub = vim.loop.cwd()
   -- local jsbeautifyrc = pth:new(string.format("%s/.jsbeautifyrc.json", cdub))
