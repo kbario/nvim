@@ -1,9 +1,9 @@
-local hr = require("homerows.homerows")
+local hr = require("homerows")
 local pth = require("plenary.path")
-local Remap = require("kbario.keymap")
-local nnoremap = Remap.nnoremap
-local vnoremap = Remap.vnoremap
-local xnoremap = Remap.xnoremap
+-- local Remap = require("kbario.keymap")
+-- local nnoremap = Remap.nnoremap
+-- local vnoremap = Remap.vnoremap
+-- local xnoremap = Remap.xnoremap
 
 nnoremap("<leader><leader>h", function()
   print("Hello World!")
