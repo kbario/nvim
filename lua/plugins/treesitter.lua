@@ -1,3 +1,4 @@
+local ensure_treesitter = require("config.clients")
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -41,7 +42,7 @@ return {
 			autotag = { enable = true },
 			-- needed for JoosepAlviste/nvim-ts-context-commentstring to work
 			context_commentstring = { enable = true, enable_autocmd = false },
-			-- ensure_installed = ensure_treesitter,
+			ensure_installed = ensure_treesitter,
 			highlight = {
 				enable = true,
 				disable = function(_, bufnr) return vim.api.nvim_buf_line_count(bufnr) > 10000 end,

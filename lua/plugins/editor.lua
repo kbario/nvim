@@ -49,27 +49,90 @@ local p_selector = function(_, filetype, buftype)
 end
 
 
+
+
+
 return {
 	{
 		"kylechui/nvim-surround",
 		version = "*", -- Use for stability; omit to use `main` branch for the latest features
 		event = "VeryLazy",
-		opts = function(_, opts)
+		dependencies = {
+			{
+				"kbario/homerows.nvim",
+				opts = {
+					custom_keys = {
+						surround_n = "r1b",
+						surround_nl = "R1b",
+						surround_v = "r2b",
+						surround_vl = "R2b",
+						surround_c = "r3b",
+						surround_d = "r4b",
+					}
+				}
+			}
+		},
+		keys = function()
 			local hr = require("homerows").lazy_hr()
-			local keymaps = {
+			return {
+				{
+					"<leader>" .. hr.surround_n,
+					"<Plug>(nvim-surround-normal)",
+					desc = "󰅴 Surround (n)"
+				},
+				{
+					"<leader>" .. hr.surround_n .. hr.surround_n,
+					"<Plug>(nvim-surround-normal-cur)",
+					desc = "󰅴 Surround: line (n)"
+				},
+				{
+					"<leader>" .. hr.surround_nl,
+					"<Plug>(nvim-surround-normal-line)",
+					desc = "󰅴 Surround: on new line (n)"
+				},
+				{
+					"<leader>" .. hr.surround_nl .. hr.surround_nl,
+					"<Plug>(nvim-surround-normal-cur-line)",
+					desc = "󰅴 Surround: line on new line (n)",
+				},
+				{
+					"<leader>" .. hr.surround_v,
+					"<Plug>(nvim-surround-visual)",
+					desc = "󰅴 Surround (v)",
+					mode = "x"
+				},
+				{
+					"<leader>" .. hr.surround_vl,
+					"<Plug>(nvim-surround-visual-line)",
+					desc = "󰅴 Surround: line (v)",
+					mode = "x"
+				},
+				{
+					"<leader>" .. hr.surround_c,
+					"<Plug>(nvim-surround-change)",
+					desc = "󰅴 Surround: Change surrounding",
+				},
+				{
+					"<leader>" .. hr.surround_d,
+					"<Plug>(nvim-surround-delete)",
+					desc = "󰅴 Surround: Delete surrounding"
+				},
+			}
+		end,
+		opts = {
+			keymaps = {
 				insert = false,
 				insert_line = false,
-				normal = "<leader>" .. hr.r1b,
-				normal_cur = "<leader>" .. hr.r1b .. hr.r1b,
-				normal_line = "<leader>" .. hr.R1b,
-				normal_cur_line = "<leader>" .. hr.R1b .. hr.R1b,
-				visual = "<leader>" .. hr.r2b,
-				visual_line = "<leader>" .. hr.R2b,
-				change = "<leader>" .. hr.r3b,
-				delete = "<leader>" .. hr.r4b,
-			}
-			return vim.list_extend(keymaps, opts)
-		end,
+				normal = false,
+				normal_cur = false,
+				normal_line = false,
+				normal_cur_line = false,
+				visual = false,
+				visual_line = false,
+				change = false,
+				delete = false,
+			},
+		}
 	},
 	{
 		"numToStr/Comment.nvim",
@@ -100,35 +163,75 @@ return {
 		end,
 		config = true,
 	},
-	-- {
-	--   "ggandor/flit.nvim",
-	--   keys = function()
-	--     ---@type LazyKeys[]
-	--     local ret = {}
-	--     for _, key in ipairs({ "f", "F", "t", "T" }) do
-	--       ret[#ret + 1] = { key, mode = { "n", "x", "o" }, desc = key }
-	--     end
-	--     return ret
-	--   end,
-	--   opts = { labeled_modes = "nx" },
-	-- },
-	-- {
-	--   "ggandor/leap.nvim",
-	--   keys = {
-	--     { "s", mode = { "n", "x", "o" }, desc = "Leap forward to" },
-	--     { "S", mode = { "n", "x", "o" }, desc = "Leap backward to" },
-	--     { "gs", mode = { "n", "x", "o" }, desc = "Leap from windows" },
-	--   },
-	--   config = function(_, opts)
-	--     local leap = require("leap")
-	--     for k, v in pairs(opts) do
-	--       leap.opts[k] = v
-	--     end
-	--     leap.add_default_mappings(true)
-	--     vim.keymap.del({ "x", "o" }, "x")
-	--     vim.keymap.del({ "x", "o" }, "X")
-	--   end,
-	-- },
+	{
+		"ggandor/flit.nvim",
+		keys = function()
+			---@type LazyKeys[]
+			local ret = {}
+			for _, key in ipairs({ "f", "F", "t", "T" }) do
+				ret[#ret + 1] = { key, mode = { "n", "x", "o" }, desc = "󱕘 Flit:" .. key }
+			end
+			return ret
+		end,
+		opts = { labeled_modes = "nx" },
+	},
+	{
+		"ggandor/leap.nvim",
+		dependencies = {
+			{
+				"kbario/homerows.nvim",
+				opts = {
+					custom_keys = {
+						leap_to = "r1",
+						leap_til = "r2",
+						leap_back_to = "R1",
+						leap_back_til = "R2",
+						leap_win = "r3",
+					}
+				}
+			}
+		},
+		keys = function()
+			local hr = require("homerows").lazy_hr()
+			return {
+				{
+					"<leader>" .. hr.leap_to,
+					"*<Plug>(leap-forward-to)*",
+					mode = { "n", "x", "o" },
+					desc = "󱕘 Leap: To"
+				},
+				{
+					"<leader>" .. hr.leap_til,
+					"*<Plug>(leap-forward-till)*",
+					mode = { "x", "o" },
+					desc = "󱕘 Leap: Til"
+				},
+				{
+					"<leader>" .. hr.leap_back_to,
+					"*<Plug>(leap-backward-to)*",
+					mode = { "n", "x", "o" },
+					desc = "󱕘 Leap: Back to"
+				},
+				{
+					"<leader>" .. hr.leap_back_til,
+					"*<Plug>(leap-backward-till)*",
+					mode = { "x", "o" },
+					desc = "󱕘 Leap: Back til"
+				},
+				{
+					"<leader>" .. hr.leap_win,
+					"*<Plug>(leap-from-window)*",
+					mode = { "n", "x", "o" },
+					desc = "󱕘 Leap: Window"
+				} }
+		end,
+		config = function(_, opts)
+			local leap = require("leap")
+			for k, v in pairs(opts) do
+				leap.opts[k] = v
+			end
+		end,
+	},
 	{
 		"RRethy/vim-illuminate",
 		event = { "BufReadPost", "BufNewFile" },
@@ -195,18 +298,18 @@ return {
 			{ 'zM', function() require('ufo').closeAllFolds() end,        desc = "󱃅 ufo" },
 			{ 'zr', function() require('ufo').openFoldsExceptKinds() end, desc = "󱃅 ufo" },
 			{ 'zm', function() require('ufo').closeFoldsWith() end,       desc = "󱃅 ufo" }, -- closeAllFolds == closeFoldsWith(0)
-			{
-				'K',
-				function()
-					local winid = require('ufo').peekFoldedLinesUnderCursor()
-					if not winid then
-						-- choose one of coc.nvim and nvim lsp
-						vim.fn.CocActionAsync('definitionHover') -- coc.nvim
-						vim.lsp.buf.hover()
-					end
-				end,
-				desc = "󱃅  ufo"
-			}
+			-- {
+			-- 	'K',
+			-- 	function()
+			-- 		local winid = require('ufo').peekFoldedLinesUnderCursor()
+			-- 		if not winid then
+			-- 			-- choose one of coc.nvim and nvim lsp
+			-- 			vim.fn.CocActionAsync('definitionHover') -- coc.nvim
+			-- 			vim.lsp.buf.hover()
+			-- 		end
+			-- 	end,
+			-- 	desc = "󱃅  ufo"
+			-- }
 		}
 	},
 	{

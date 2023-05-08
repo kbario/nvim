@@ -20,7 +20,7 @@ return {
         {
           "<leader>" .. hr.spear .. hr.r0,
           function() require("spear.spear").spear({ ".module.ts", "_helper.ts", "_utils.ts", "_helper.js", "utils.js" }) end,
-          desc = "󱡅 spear: nav to module/helper/utils"
+          desc = "󱡅 Spear: Nav to module/helper/utils"
         },
         {
           "<leader>" .. hr.spear .. hr.r1,
@@ -30,19 +30,19 @@ return {
               { match_pref = "next" }
             )
           end,
-          desc = "󱡅 spear: nav to main file"
+          desc = "󱡅 Spear: Nav to main file"
         },
         {
           "<leader>" .. hr.spear .. hr.r2,
           function() require("spear.spear").spear(".component.html", ".html") end,
-          desc = "󱡅 spear: nav to "
+          desc = "󱡅 Spear: Nav to template"
         },
         {
           "<leader>" .. hr.spear .. hr.r3,
           function()
             require("spear.spear").spear({ ".component.css", ".component.scss", ".component.sass", ".css" })
           end,
-          desc = "󱡅 spear: nav to "
+          desc = "󱡅 Spear: Nav to styles"
         },
         {
           "<leader>" .. hr.spear .. hr.r4,
@@ -52,7 +52,7 @@ return {
               { match_pref = "next" }
             )
           end,
-          desc = "󱡅 spear: nav to "
+          desc = "󱡅 Spear: Nav to tests"
         },
       }
     end
@@ -65,10 +65,17 @@ return {
       prefs = { "programmers_dvorak", "colemak_dh" },
       add_to_keymap = false,
       add_are_keymap = false,
+      custom_keys = {
+        me = "l1t",
+      },
     },
     lazy = false,
     priority = 10000,
     version = "*",
-    dev = true
+    dev = true,
+    config = function(_, opts)
+      require("homerows").setup(opts)
+      require("config.keymaps")
+    end
   }
 }

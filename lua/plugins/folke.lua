@@ -19,22 +19,22 @@ return {
 				{
 					"<leader>" .. hr.folke .. hr.r1,
 					"<cmd>TroubleToggle document_diagnostics<cr>",
-					desc = "Document Diagnostics (Trouble)"
+					desc = "󰞏 Trouble: Document Diagnostics"
 				},
 				{
 					"<leader>" .. hr.folke .. hr.R1,
 					"<cmd>TroubleToggle workspace_diagnostics<cr>",
-					desc = "Workspace Diagnostics (Trouble)"
+					desc = "󰞏 Trouble: Workspace Diagnostics"
 				},
 				{
 					"<leader>" .. hr.folke .. hr.r2,
 					"<cmd>TroubleToggle loclist<cr>",
-					desc = "Location List (Trouble)"
+					desc = "󰞏 Trouble: Location List"
 				},
 				{
 					"<leader>" .. hr.folke .. hr.R2,
 					"<cmd>TroubleToggle quickfix<cr>",
-					desc = "Quickfix List (Trouble)"
+					desc = "󰞏 Trouble: Quickfix List"
 				},
 				{
 					"[q",
@@ -45,7 +45,7 @@ return {
 							vim.cmd.cprev()
 						end
 					end,
-					desc = "Previous trouble/quickfix item",
+					desc = "󰞏 Trouble: Previous",
 				},
 				{
 					"]q",
@@ -56,7 +56,7 @@ return {
 							vim.cmd.cnext()
 						end
 					end,
-					desc = "Next trouble/quickfix item",
+					desc = "󰞏 Trouble: Next",
 				},
 			}
 			return vim.list_extend(mappings, keys)
@@ -85,29 +85,28 @@ return {
 				{
 					"]t",
 					function() require("todo-comments").jump_next() end,
-					desc = "Next todo comment"
+					desc = "󰗡 Todo: Next"
 				},
 				{
 					"[t",
 					function() require("todo-comments").jump_prev() end,
-					desc = "Previous todo comment"
+					desc = "󰗡 Todo: Previous"
 				},
 				{
 					"<leader>" .. hr.folke .. hr.r3,
 					"<cmd>TodoTrouble<cr>",
-					desc =
-					"Todo (Trouble)"
+					desc = "󰗡 Todo: Todo"
 				},
 				{
 					"<leader>" .. hr.folke .. hr.R3,
 					"<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",
-					desc = "Todo/Fix/Fixme (Trouble)"
+					desc = "󰗡 Todo: Todo/Fix/Fixme"
 				},
-				{ "<leader>" .. hr.folke .. hr.r4, "<cmd>TodoTelescope<cr>", desc = "Todo" },
+				{ "<leader>" .. hr.folke .. hr.r4, "<cmd>TodoTelescope<cr>", desc = "󰗡 Todo: Todo" },
 				{
 					"<leader>" .. hr.folke .. hr.R4,
 					"<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>",
-					desc = "Todo/Fix/Fixme"
+					desc = "󰗡 Todo: Telescope Todo/Fix/Fixme"
 				},
 			}
 			return vim.list_extend(mappings, keys)
