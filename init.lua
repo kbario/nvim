@@ -1,15 +1,99 @@
---[[ local function load_two(modulename)
-  local errmsg = ""
-    local filename = string.format("./Users/kylebario/luaProjects/%s", modulename)
-    local file = io.open(filename, "rb")
-    if file then
-      -- Compile and return the module
-      return assert(loadstring(assert(file:read("*a")), filename))
-    end
-    errmsg = errmsg.."\n\tno file '"..filename.."' (checked with custom loader)"
-    return errmsg
-  end
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
 
-table.insert(package.loaders, 2, load_two) ]]
+vim.opt.nu = true
+vim.opt.relativenumber = true
+vim.g.cmp_enabled = true
 
-require("kbario")
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
+vim.opt.hlsearch = false
+vim.opt.incsearch = true
+vim.opt.conceallevel = 3 -- Hide * markup for bold and italic
+
+-- lukas-reineke/indent-blankline.nvim
+-- vim.opt.list = true
+-- vim.opt.listchars:remove "space"
+-- vim.opt.listchars:append "eol:↴"
+-- vim.opt.listchars:remove "tab"
+
+vim.o.foldcolumn = '1' -- '0' is not bad
+vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+
+vim.opt.smartindent = true
+
+vim.opt.wrap = false
+
+vim.opt.colorcolumn = "80"
+vim.opt.scrolloff = 8
+vim.opt.signcolumn = "yes"
+
+vim.g.mapleader = " "
+
+
+require("lazy").setup("plugins", {
+  defaults = { lazy = true },
+  -- install = { colorscheme = { "nvchad" } },
+
+  dev = {
+    path = "~/projects/lua",
+    patterns = { 'kbario' },
+    fallback = false
+  },
+  ui = {
+    icons = {
+      ft = "",
+      lazy = "鈴 ",
+      loaded = "",
+      not_loaded = "",
+    },
+  },
+
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        "2html_plugin",
+        "tohtml",
+        "getscript",
+        "getscriptPlugin",
+        "gzip",
+        "logipat",
+        "netrw",
+        "netrwPlugin",
+        "netrwSettings",
+        "netrwFileHandlers",
+        "matchit",
+        "tar",
+        "tarPlugin",
+        "rrhelper",
+        "spellfile_plugin",
+        "vimball",
+        "vimballPlugin",
+        "zip",
+        "zipPlugin",
+        "tutor",
+        "rplugin",
+        "syntax",
+        "synmenu",
+        "optwin",
+        "compiler",
+        "bugreport",
+        "ftplugin",
+      },
+    },
+  },
+})
