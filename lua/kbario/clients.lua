@@ -25,6 +25,7 @@ M = {
   jsonls = {},
   marksman = false,
   omnisharp = {},
+  powershell_es = {},
   prismals = false,
   r_language_server = false,
   remark_ls = {},

@@ -21,6 +21,13 @@ return require('packer').startup(function(use)
   -- colours
   use 'folke/tokyonight.nvim'
   use 'joshdick/onedark.vim'
+  use { "catppuccin/nvim", as = "catppuccin",
+    config = function()
+      require("catppuccin").setup {
+        flavour = 'macchiato'
+      }
+    end
+  }
 
   -- telescope
   use {
@@ -188,6 +195,19 @@ return require('packer').startup(function(use)
     run = ":UpdateRemotePlugins",
     config = function()
       require("jupyter-nvim").setup()
+    end
+  }
+
+  -- vscode port
+  use {
+    'EthanJWright/vs-tasks.nvim',
+    requires = {
+      'nvim-lua/popup.nvim',
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim'
+    },
+    config = function()
+      require("vstask").setup()
     end
   }
 

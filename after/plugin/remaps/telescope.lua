@@ -31,5 +31,25 @@ nnoremap("<leader>" .. hr.l1 .. hr.R3, function()
 end, { desc = "telescope: live grep" })
 
 nnoremap("<leader>" .. hr.l1 .. hr.r4, function()
+  require("telescope.builtin").git_status()
+end, { desc = "telescope: keymaps" })
+
+nnoremap("<leader>" .. hr.l1 .. hr.r4b, function()
   require("telescope.builtin").keymaps()
 end, { desc = "telescope: keymaps" })
+
+-- vstask maps
+
+nnoremap("<leader>" .. hr.l0b .. hr.r1, function()
+  require("telescope").extensions.vstask.tasks()
+end, { desc = "vstask: tasks" })
+nnoremap("<leader>" .. hr.l0b .. hr.r2, function()
+  require("telescope").extensions.vstask.inputs()
+end, { desc = "vstask: inputs" })
+nnoremap("<leader>" .. hr.l0b .. hr.r3, function()
+  require("telescope").extensions.vstask.history()
+end, { desc = "vstask: history" })
+nnoremap("<leader>" .. hr.l0b .. hr.r4, function()
+  require("telescope").extensions.vstask.launch()
+end, { desc = "vstask: launch" })
+
