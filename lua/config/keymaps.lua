@@ -58,33 +58,28 @@ map("n", "<C-Left>", "<cmd>vertical resize -2<CR>", { desc = "󰀄 Me: Resize sp
 map("n", "<C-Right>", "<cmd>vertical resize +2<CR>", { desc = "󰀄 Me: Resize split right" })
 
 -- Move Lines
-map("n", "<A-j>", "<cmd>m .+1<cr>==", { desc = "󰀄 Me: Move line down" })
-map("n", "<A-k>", "<cmd>m .-2<cr>==", { desc = "󰀄 Me: Move line up" })
-map("i", "<A-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "󰀄 Me: Move line down" })
-map("i", "<A-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "󰀄 Me: Move line up" })
-map("v", "<A-j>", ":m '>+1<cr>gv=gv", { desc = "󰀄 Me: Move line down" })
-map("v", "<A-k>", ":m '<-2<cr>gv=gv", { desc = "󰀄 Me: Move line up" })
+map("n", "<M-j>", "<cmd>m .+1<cr>==", { desc = "󰀄 Me: Move line down" })
+map("n", "<M-k>", "<cmd>m .-2<cr>==", { desc = "󰀄 Me: Move line up" })
+map("i", "<M-j>", "<esc><cmd>m .+1<cr>==gi", { desc = "󰀄 Me: Move line down" })
+map("i", "<M-k>", "<esc><cmd>m .-2<cr>==gi", { desc = "󰀄 Me: Move line up" })
+map("v", "<M-j>", ":m '>+1<cr>gv=gv", { desc = "󰀄 Me: Move line down" })
+map("v", "<M-k>", ":m '<-2<cr>gv=gv", { desc = "󰀄 Me: Move line up" })
 
 -- indenting
 map("v", "<", "<gv", { desc = "󰀄 Me: Indent left" })
 map("v", ">", ">gv", { desc = "󰀄 Me: Indent right" })
 
 -- have your next appear in the center of the screen
-vim.keymap.set("n", "n", "nzzzv", { desc = "󰀄 Me: Next forward vertically center aligned" })
-vim.keymap.set("n", "N", "Nzzzv", { desc = "󰀄 Me: Next backward vertically center aligned" })
+map("n", "n", "nzzzv", { desc = "󰀄 Me: Next forward vertically center aligned" })
+map("n", "N", "Nzzzv", { desc = "󰀄 Me: Next backward vertically center aligned" })
 
 -- yank to clipboard
-vim.keymap.set("v", "<leader>" .. hr.me .. hr.r2, "\"+y", { desc = "󰀄 Me: Copy to clipbaord" })
-vim.keymap.set("v", "<leader>" .. hr.me .. hr.R2, "\"+Y", { desc = "󰀄 Me: Copy to clipbaord" })
+map("v", "<leader>" .. hr.me .. hr.r2, "\"+y", { desc = "󰀄 Me: Copy to clipbaord" })
+map("v", "<leader>" .. hr.me .. hr.R2, "\"+Y", { desc = "󰀄 Me: Copy to clipbaord" })
 -- paste without loosing yank
-vim.keymap.set("x", "<leader>" .. hr.me .. hr.r3, "\"_dP", { desc = "󰀄 Me: Paste without loosing yank" })
+map("x", "<leader>" .. hr.me .. hr.r3, "\"_dP", { desc = "󰀄 Me: Paste without loosing yank" })
 -- delete without loosing yank
-vim.keymap.set("x", "<leader>" .. hr.me .. hr.r4, "\"_d", { desc = "󰀄 Me: Delete without loosing yank" })
-
-local hr = require("homerows.homerows")
-local pth = require("plenary.path")
-local Remap = require("kbario.keymap")
-local nnoremap = Remap.nnoremap
+map("x", "<leader>" .. hr.me .. hr.r4, "\"_d", { desc = "󰀄 Me: Delete without loosing yank" })
 
 map("n", vim.g.mapleader .. hr.l4t .. hr.l4t, function()
   -- get current file name which should be the module you wish to add the comp to

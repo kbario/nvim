@@ -1,4 +1,4 @@
-local ensure_treesitter = require("config.clients")
+local ensure_treesitter = require("config.clients").ensure_treesitter
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",

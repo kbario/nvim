@@ -277,7 +277,16 @@ return {
 	{
 		"kevinhwang91/nvim-ufo",
 		event = { "InsertEnter" },
-		dependencies = { "kevinhwang91/promise-async" },
+		dependencies = { "kevinhwang91/promise-async",
+			{
+				"kbario/homerows.nvim",
+				opts = {
+					custom_keys = {
+						ufo = "r2t"
+					}
+				}
+			}
+		},
 		opts = {
 			preview = {
 				mappings = {
@@ -293,31 +302,52 @@ return {
 			fold_virt_text_handler = handler,
 			provider_selector = p_selector,
 		},
-		keys = {
-			{ 'zR', function() require('ufo').openAllFolds() end,         desc = "󱃅 ufo" },
-			{ 'zM', function() require('ufo').closeAllFolds() end,        desc = "󱃅 ufo" },
-			{ 'zr', function() require('ufo').openFoldsExceptKinds() end, desc = "󱃅 ufo" },
-			{ 'zm', function() require('ufo').closeFoldsWith() end,       desc = "󱃅 ufo" }, -- closeAllFolds == closeFoldsWith(0)
-			-- {
-			-- 	'K',
-			-- 	function()
-			-- 		local winid = require('ufo').peekFoldedLinesUnderCursor()
-			-- 		if not winid then
-			-- 			-- choose one of coc.nvim and nvim lsp
-			-- 			vim.fn.CocActionAsync('definitionHover') -- coc.nvim
-			-- 			vim.lsp.buf.hover()
-			-- 		end
-			-- 	end,
-			-- 	desc = "󱃅  ufo"
-			-- }
-		}
+		keys = function()
+			local hr = require("homerows.init").lazy_hr()
+			return {
+				{ "<leader>" .. hr.ufo .. hr.r1, function() require('ufo').openAllFolds() end,         desc =
+				"󱃅 Ufo: Open all" },
+				{ "<leader>" .. hr.ufo .. hr.r2, function() require('ufo').closeAllFolds() end,        desc =
+				"󱃅 Ufo: Close all" },
+				{ "<leader>" .. hr.ufo .. hr.r3, function() require('ufo').openFoldsExceptKinds() end,
+					                                                                                       desc =
+					"󱃅 Ufo: Open excepts kinds" },
+				{ "<leader>" .. hr.ufo .. hr.r4, function() require('ufo').closeFoldsWith() end,
+					                                                                                       desc =
+					"󱃅 Ufo: Close all with" },                                                                           -- closeAllFolds == closeFoldsWith(0)
+				{
+					"<leader>" .. hr.ufo .. hr.r1t,
+					function()
+						local winid = require('ufo').peekFoldedLinesUnderCursor()
+						if not winid then
+							vim.lsp.buf.hover()
+						end
+					end,
+					desc = "󱃅 Ufo: Hover"
+				}
+			}
+		end,
 	},
 	{
 		'Wansmer/treesj',
-		-- keys = {
-		-- 	{},
-		-- },
-		dependencies = { 'nvim-treesitter/nvim-treesitter' },
+		dependencies = { 'nvim-treesitter/nvim-treesitter',
+			{
+				"kbario/homerows.nvim",
+				opts = {
+					custom_keys = {
+						sj = "r3t"
+					}
+				}
+			}
+		},
+		keys = function()
+			local hr = require("homerows.init").lazy_hr()
+			return {
+				{
+					"<leader>" .. hr.sj .. hr.l1
+				}
+			}
+		end,
 		opts = {
 			use_default_keymaps = false,
 			langs = {

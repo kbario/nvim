@@ -72,7 +72,7 @@ return {
     lazy = false,
     priority = 10000,
     version = "*",
-    dev = true,
+    dev = false,
     config = function(_, opts)
       require("homerows").setup(opts)
       require("config.keymaps")
