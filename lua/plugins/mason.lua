@@ -1,4 +1,3 @@
-local ensure_mason_lsp = require("config.clients").ensure_mason_lsp
 local ensure_mason_null_ls = require("config.clients").ensure_mason_null_ls
 local ensure_mason_dap = require("config.clients").ensure_mason_dap
 
@@ -31,17 +30,8 @@ return {
     event = "BufEnter",
   },
   {
-    "williamboman/mason-lspconfig.nvim",
-    dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
-    event = "BufEnter",
-    opts = {
-      automatic_installation = true,
-      ensure_installed = ensure_mason_lsp,
-    },
-  },
-  {
     "jay-babu/mason-null-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    event = "BufEnter",
     dependencies = {
       "williamboman/mason.nvim",
       "jose-elias-alvarez/null-ls.nvim",

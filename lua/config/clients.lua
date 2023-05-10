@@ -11,8 +11,8 @@ local config = {
   dockerfile = { treesitter = { "dockerfile" }, lsp = {}, formatter = {} },
   dot        = { treesitter = { "dot" }, lsp = {}, formatter = {} },
   elixir     = { treesitter = { "elixir" }, lsp = {}, formatter = {} },
-  fennel     = { treesitter = { "fennel" }, lsp = { "fennel-language-server" }, formatter = {} },
-  fish       = { treesitter = { "fish" }, lsp = {}, formatter = {} },
+  fennel     = { treesitter = { "fennel" }, lsp = { "fennel-language-server" } },
+  fish       = { treesitter = { "fish" } },
   git        = {
     treesitter = { "git_config", "git_rebase", "gitattributes", "gitcommit", "gitignore", "diff" },
     lsp = { "gh" },
@@ -28,14 +28,13 @@ local config = {
     formatter = { "gofumpt" },
     dap = { "delve" }
   },
-  graphql    = { treesitter = { "graphql" }, lsp = { graphql = {} }, formatter = {} },
-  help       = { treesitter = { "help" }, lsp = {}, formatter = {} },
-  html       = { treesitter = { "html" }, lsp = { emmet_ls = {}, html = {} }, formatter = {} },
-  http       = { treesitter = { "http" }, lsp = {}, formatter = {} },
+  graphql    = { treesitter = { "graphql" }, lsp = { graphql = {} } },
+  -- help       = { treesitter = { "help" }},
+  html       = { treesitter = { "html" }, lsp = { emmet_ls = {}, html = {} } },
+  http       = { treesitter = { "http" } },
   javascript = {
     treesitter = { "javascript", "jsdoc", "typescript", "tsx" },
     lsp = { denols = false, tsserver = {}, angularls = {} },
-    formatter = {},
     dap = { "node2" }
   }, --"chrome", --"firefox", --"js" } },
   json       = { treesitter = { "json", "json5", "JSON", "jsonc" }, lsp = { jsonls = {}, } },
@@ -130,10 +129,10 @@ M.ensure_mason_null_ls = {}
 M.ensure_mason_dap = {}
 for _, lang in pairs(config) do
   M.ensure_treesitter = vim.list_extend(M.ensure_treesitter, lang.treesitter or {})
-  M.lsp_clients = vim.tbl_extend("force", M.lsp_clients, lang.lsp or {})
   for client, config in pairs(lang.lsp or {}) do
-    if client and config then
+    if type(client) == "string" and type(config) == "table" then
       table.insert(M.ensure_mason_lsp, client)
+      M.lsp_clients = vim.tbl_extend("force", M.lsp_clients, { [client] = config })
     end
   end
   M.ensure_mason_null_ls = vim.list_extend(M.ensure_mason_null_ls, lang.formatter or {})
