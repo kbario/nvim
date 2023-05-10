@@ -232,7 +232,7 @@ return {
     opts = {
       char = "│",
       buftype_exclude = { "terminal" },
-      filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "terminal", "NvimTree" },
+      filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "terminal" },  -- "NvimTree" },
       indentLine_enabled = 1,
       show_trailing_blankline_indent = false,
       show_first_indent_level = false,
@@ -240,5 +240,17 @@ return {
       show_current_context = true,
       show_current_context_start = true,
     },
+  },
+  {
+    "j-hui/fidget.nvim",
+    opts = {
+      text = {
+        spinner = "dots_snake", -- animation shown when tasks are ongoing
+        done = "",       -- character shown when all tasks are complete
+        commenced = "Started", -- message shown when task starts
+        completed = "Completed", -- message shown when task completes
+      },
+    },
+    event = "BufEnter",
   }
 }
