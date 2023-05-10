@@ -1,5 +1,19 @@
 local M = {}
 
+---@class Client
+---@field dap? EnsureTable
+---@field formatter? EnsureTable
+---@field lsp? LspConfig
+---@field treesitter?EnsureTable 
+---@field compiler? EnsureTable 
+
+---@class LspConfig
+---@field config table
+---@field keys LazyKeys[]
+
+---@alias EnsureTable string[]
+
+---@type Client[]
 local config = {
   arduino    = { treesitter = { "arduino" }, lsp = { arduino_language_server = {}, } },
   astro      = { treesitter = { "astro" }, lsp = { astro = {} } },
@@ -114,24 +128,34 @@ local config = {
   svelte     = { treesitter = { "svelte" }, lsp = { svelte = {}, } },
   swift      = { treesitter = { "swift" } },
   todotxt    = { treesitter = { "todotxt" } },
-  treesitter = { lsp = { ["tree-sitter-cli"] = {} } },
   toml       = { treesitter = { "toml" } },
   vim        = { treesitter = { "vim" }, lsp = { vimls = {}, } },
   vimdoc     = { treesitter = { "vimdoc" } },
   yaml       = { treesitter = { "yaml" }, lsp = { yamlls = {}, azure_pipelines_ls = {} } },
-  zig        = { treesitter = { "zig" }, lsp = { zls = {} } }
+  zig        = { treesitter = { "zig" }, lsp = { zls = {} } },
+  treesitter = { compiler = { "tree-sitter-cli" } },
 }
 
+---@type LspConfig[]
 M.lsp_clients = {}
+---@type EnsureTable
+M.ensure_mason = {}
+---@type EnsureTable
 M.ensure_treesitter = {}
+---@type EnsureTable
 M.ensure_mason_lsp = {}
+---@type EnsureTable
 M.ensure_mason_null_ls = {}
+---@type EnsureTable
 M.ensure_mason_dap = {}
+
 for _, lang in pairs(config) do
   M.ensure_treesitter = vim.list_extend(M.ensure_treesitter, lang.treesitter or {})
   for client, config in pairs(lang.lsp or {}) do
-    if type(client) == "string" and type(config) == "table" then
+    if type(client) == "string" and config then
       table.insert(M.ensure_mason_lsp, client)
+    end
+    if type(client) == "string" and type(config) == "table" then
       M.lsp_clients = vim.tbl_extend("force", M.lsp_clients, { [client] = config })
     end
   end

@@ -1,3 +1,4 @@
+local ensure_mason = require("config.clients").ensure_mason
 local ensure_mason_null_ls = require("config.clients").ensure_mason_null_ls
 local ensure_mason_dap = require("config.clients").ensure_mason_dap
 
@@ -20,6 +21,23 @@ return {
         },
       },
     },
+    config = function(_, opts)
+      require("mason").setup(opts)
+      local mr = require("mason-registry")
+      local function ensure_installed()
+        for _, tool in ipairs(ensure_mason) do
+          local p = mr.get_package(tool)
+          if not p:is_installed() then
+            p:install()
+          end
+        end
+      end
+      if mr.refresh then
+        mr.refresh(ensure_installed)
+      else
+        ensure_installed()
+      end
+    end,
     max_concurrent_installers = 10,
     build = ":MasonUpdate",
     event = "BufEnter",
