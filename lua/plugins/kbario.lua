@@ -18,44 +18,12 @@ return {
       local hr = require("homerows").lazy_hr()
       return {
         {
-          "<leader>" .. hr.spear .. hr.r0,
-          function() require("spear.spear").spear({ ".module.ts", "_helper.ts", "_utils.ts", "_helper.js", "utils.js" }) end,
-          desc = "󱡅 Spear: Nav to module/helper/utils"
-        },
-        {
-          "<leader>" .. hr.spear .. hr.r1,
-          function()
-            require("spear.spear").spear(
-              { ".component.ts", ".service.ts", ".pipe.ts", ".tsx", ".ts", ".jsx", ".js" },
-              { match_pref = "next" }
-            )
-          end,
-          desc = "󱡅 Spear: Nav to main file"
-        },
-        {
-          "<leader>" .. hr.spear .. hr.r2,
-          function() require("spear.spear").spear(".component.html", ".html") end,
-          desc = "󱡅 Spear: Nav to template"
-        },
-        {
-          "<leader>" .. hr.spear .. hr.r3,
-          function()
-            require("spear.spear").spear({ ".component.css", ".component.scss", ".component.sass", ".css" })
-          end,
-          desc = "󱡅 Spear: Nav to styles"
-        },
-        {
-          "<leader>" .. hr.spear .. hr.r4,
-          function()
-            require("spear.spear").spear(
-              { ".component.spec.ts", ".service.spec.ts", ".pipe.spec.ts" },
-              { match_pref = "next" }
-            )
-          end,
-          desc = "󱡅 Spear: Nav to tests"
+          "<leader>" .. hr.spear,
+          desc = "󱡅 Spear"
         },
       }
-    end
+    end,
+    dev = false
   },
   {
     "kbario/homerows.nvim",

@@ -3,18 +3,17 @@ local M = {}
 ---@class Client
 ---@field dap? EnsureTable
 ---@field formatter? EnsureTable
----@field lsp? LspConfig
----@field treesitter?EnsureTable 
----@field compiler? EnsureTable 
+---@field lsp? LspConfig[]
+---@field treesitter?EnsureTable
+---@field other? EnsureTable
 
 ---@class LspConfig
----@field config table
----@field keys LazyKeys[]
+---@field kb_keys? LazyKeys[]
 
 ---@alias EnsureTable string[]
 
 ---@type Client[]
-local config = {
+local configs = {
   arduino    = { treesitter = { "arduino" }, lsp = { arduino_language_server = {}, } },
   astro      = { treesitter = { "astro" }, lsp = { astro = {} } },
   bash       = { treesitter = { "bash" }, lsp = { bashls = {}, powershell_es = {} }, dap = { "bash" } },
@@ -25,18 +24,20 @@ local config = {
   dockerfile = { treesitter = { "dockerfile" }, lsp = {}, formatter = {} },
   dot        = { treesitter = { "dot" }, lsp = {}, formatter = {} },
   elixir     = { treesitter = { "elixir" }, lsp = {}, formatter = {} },
-  fennel     = { treesitter = { "fennel" }, lsp = { "fennel-language-server" } },
+  fennel     = { treesitter = { "fennel" }, lsp = { fennel_language_server = {} } },
   fish       = { treesitter = { "fish" } },
   git        = {
     treesitter = { "git_config", "git_rebase", "gitattributes", "gitcommit", "gitignore", "diff" },
-    lsp = { "gh" },
+    other = { "gh" },
   },
   go         = {
     treesitter = { "go", "gomod", "gosum", "gowork" },
     lsp = {
       gopls = {
-        cmd = { "gopls", "serve" },
-        settings = { gopls = { analyses = { unusedparams = true, }, staticcheck = true, }, },
+        config = {
+          cmd = { "gopls", "serve" },
+          settings = { gopls = { analyses = { unusedparams = true, }, staticcheck = true, }, },
+        },
       },
     },
     formatter = { "gofumpt" },
@@ -48,9 +49,82 @@ local config = {
   http       = { treesitter = { "http" } },
   javascript = {
     treesitter = { "javascript", "jsdoc", "typescript", "tsx" },
-    lsp = { denols = false, tsserver = {}, angularls = {} },
-    dap = { "node2" }
-  }, --"chrome", --"firefox", --"js" } },
+    lsp = {
+      denols = false,
+      tsserver = {
+        kb_keys = function(hr)
+          local ts = require("typescript")
+          return {
+            {
+              "<leader>" .. hr.l0 .. hr.r0b,
+              function() ts.actions.fixAll() end,
+              desc = "󰒋 TS LSP: Fix all"
+            },
+            {
+              "<leader>" .. hr.l0 .. hr.r2b,
+              function() ts.actions.addMissingImports() end,
+              desc = "󰒋 TS LSP: Add missing imports"
+            },
+            {
+              "<leader>" .. hr.l0 .. hr.r3b,
+              function() ts.actions.organizeImports() end,
+              desc = "󰒋 TS LSP: Organise imports"
+            },
+            {
+              "<leader>" .. hr.l0 .. hr.r4b,
+              function() ts.actions.removeUnused() end,
+              desc = "󰒋 TS LSP: Remove unused imports"
+            },
+          }
+        end,
+      },
+      angularls = {
+        filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx", "css", "scss" },
+        kb_keys = function(hr)
+          return {
+            {
+              "<leader>" .. hr.spear .. hr.r0,
+              function() require("spear.spear").spear({ ".module.ts", "_helper.ts", "_utils.ts", "_helper.js", "utils.js" }) end,
+              desc = "󱡅 Spear: Nav to module/helper/utils"
+            },
+            {
+              "<leader>" .. hr.spear .. hr.r1,
+              function()
+                require("spear.spear").spear(
+                  { ".component.ts", ".service.ts", ".pipe.ts" },
+                  { match_pref = "next" }
+                )
+              end,
+              desc = "󱡅 Spear: Nav to main file"
+            },
+            {
+              "<leader>" .. hr.spear .. hr.r2,
+              function() require("spear.spear").spear(".component.html") end,
+              desc = "󱡅 Spear: Nav to template"
+            },
+            {
+              "<leader>" .. hr.spear .. hr.r3,
+              function()
+                require("spear.spear").spear({ ".component.css", ".component.scss", ".component.sass", ".css" })
+              end,
+              desc = "󱡅 Spear: Nav to styles"
+            },
+            {
+              "<leader>" .. hr.spear .. hr.r4,
+              function()
+                require("spear.spear").spear(
+                  { ".component.spec.ts", ".service.spec.ts", ".pipe.spec.ts" },
+                  { match_pref = "next" }
+                )
+              end,
+              desc = "󱡅 Spear: Nav to tests"
+            },
+          }
+        end,
+      }
+    },
+    -- dap = { "node2" } --"chrome", --"firefox", --"js" } },
+  },
   json       = { treesitter = { "json", "json5", "JSON", "jsonc" }, lsp = { jsonls = {}, } },
   julia      = { treesitter = { "julia" } },
   kotlin     = { treesitter = { "kotlin" } },
@@ -133,7 +207,7 @@ local config = {
   vimdoc     = { treesitter = { "vimdoc" } },
   yaml       = { treesitter = { "yaml" }, lsp = { yamlls = {}, azure_pipelines_ls = {} } },
   zig        = { treesitter = { "zig" }, lsp = { zls = {} } },
-  treesitter = { compiler = { "tree-sitter-cli" } },
+  treesitter = { other = { "tree-sitter-cli" } },
 }
 
 ---@type LspConfig[]
@@ -149,18 +223,26 @@ M.ensure_mason_null_ls = {}
 ---@type EnsureTable
 M.ensure_mason_dap = {}
 
-for _, lang in pairs(config) do
+for _, lang in pairs(configs) do
+  -- treesitter
   M.ensure_treesitter = vim.list_extend(M.ensure_treesitter, lang.treesitter or {})
+  -- lsp
   for client, config in pairs(lang.lsp or {}) do
+    -- install
     if type(client) == "string" and config then
       table.insert(M.ensure_mason_lsp, client)
     end
+    -- setup
     if type(client) == "string" and type(config) == "table" then
-      M.lsp_clients = vim.tbl_extend("force", M.lsp_clients, { [client] = config })
+      M.lsp_clients = vim.tbl_extend("force", M.lsp_clients, { [client] = config or {} })
     end
   end
+  -- formatters
   M.ensure_mason_null_ls = vim.list_extend(M.ensure_mason_null_ls, lang.formatter or {})
+  -- debuggers
   M.ensure_mason_dap = vim.list_extend(M.ensure_mason_dap, lang.dap or {})
+  -- compilers
+  M.ensure_mason = vim.list_extend(M.ensure_mason, lang.other or {})
 end
 
 return M

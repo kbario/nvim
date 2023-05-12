@@ -5,8 +5,7 @@ local M = {}
 ---@type PluginLspKeys
 M._keys = nil
 
-function M.get()
-  local hr = require("homerows").lazy_hr()
+function M.get(hr)
   if not M._keys then
     ---@class PluginLspKeys
     -- stylua: ignore
@@ -74,6 +73,11 @@ function M.get()
         M.diagnostic_goto(false, "WARN"),
         desc = "󰒋 LSP: Previous error"
       },
+      {
+        "<leader>" .. hr.l0 .. hr.r1b,
+        function() vim.lsp.buf.rename() end,
+        desc = "󰒋 LSP: Rename variable"
+      }
       -- {
       --   "<leader>" .. hr.l0 .. hr.R4t,
       --   function() vim.diagnostic.open_float() end,
@@ -82,32 +86,14 @@ function M.get()
     }
   end
 
-  if require("lazy.core.config").plugins["inc-rename.nvim"] ~= nil then
-    M._keys[#M._keys + 1] = {
-      "<leader>" .. hr.l0 .. hr.r1b,
-      function()
-        local inc_rename = require("inc_rename")
-        return ":" .. inc_rename.config.cmd_name .. " " .. vim.fn.expand("<cword>")
-      end,
-      expr = true,
-      desc = "󰒋 LSP: Incremental rename variable",
-      has = "rename",
-    }
-  else
-    M._keys[#M._keys + 1] = {
-      "<leader>" .. hr.l0 .. hr.r1b,
-      function() vim.lsp.buf.rename() end,
-      desc = "󰒋 LSP: Rename variable"
-    }
-  end
   return M._keys
 end
 
-function M.on_attach(client, buffer)
+function M.on_attach(client, buffer, quays)
   local Keys = require("lazy.core.handler.keys")
   local keymaps = {} ---@type table<string,LazyKeys|{has?:string}>
 
-  for _, value in ipairs(M.get()) do
+  for _, value in ipairs(quays) do
     local keys = Keys.parse(value)
     if keys[2] == vim.NIL or keys[2] == false then
       keymaps[keys.id] = nil
@@ -179,6 +165,8 @@ return {
       }
     },
     config = function(_, opts)
+      local hr = require("homerows").lazy_hr()
+
       require("mason-lspconfig").setup({
         automatic_installation = true,
         ensure_installed = ensure_mason_lsp,
@@ -216,8 +204,14 @@ return {
             vim.lsp.protocol.make_client_capabilities()
           ),
           on_attach = function(client, bfnr)
-            M.on_attach(client, bfnr)
-            -- keys_on_attach(client, bfnr, config.add_keys or {})
+            M.on_attach(client, bfnr, M.get(hr))
+            if config.kb_keys then
+              if type(config.kb_keys) == "function" then
+                M.on_attach(client, bfnr, config.kb_keys(hr))
+              elseif type(config.kb_keys) == "table" then
+                M.on_attach(client, bfnr, config.kb_keys or {})
+              end
+            end
           end
         }, opts or {}, config or {})
 

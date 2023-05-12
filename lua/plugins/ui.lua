@@ -1,120 +1,120 @@
 return {
-  {
-    "nvim-tree/nvim-tree.lua",
-    version = "*",
-    dependencies = {
-      "nvim-tree/nvim-web-devicons",
-      dependencies = {
-        "kbario/homerows.nvim",
-        opts = {
-          custom_keys = {
-            nvimtree = "l4"
-          }
-        }
-      },
-    },
-    keys = function()
-      local hr = require("homerows").lazy_hr()
-      return {
-        {
-          "<leader>" .. hr.nvimtree .. hr.r1,
-          "<cmd> NvimTreeToggle <CR>",
-          desc = " Nvim Tree: Open",
-        },
-        {
-          "<leader>" .. hr.nvimtree .. hr.r2,
-          "<cmd> NvimTreeFocus <CR>",
-          desc = " Nvim Tree: Focus",
-        },
-        {
-          "<leader>" .. hr.nvimtree .. hr.r3,
-          "<cmd> NvimTreeFindFile <CR>",
-          desc = " Nvim Tree: Nav to current file",
-        },
-        {
-          "<leader>" .. hr.nvimtree .. hr.r4,
-          "<cmd> NvimTreeCollapse <CR>",
-          desc = " Nvim Tree: Close",
-        }
-      }
-    end,
-    config = function()
-      require("nvim-tree").setup({
-        filters = {
-          dotfiles = true,
-        },
-        disable_netrw = true,
-        hijack_netrw = true,
-        hijack_cursor = true,
-        hijack_unnamed_buffer_when_opening = false,
-        sync_root_with_cwd = true,
-        update_focused_file = {
-          enable = true,
-          update_root = false,
-        },
-        view = {
-          adaptive_size = false,
-          side = "left",
-          width = 30,
-          preserve_window_proportions = true,
-        },
-        git = {
-          enable = true,
-          ignore = true,
-        },
-        filesystem_watchers = {
-          enable = true,
-        },
-        actions = {
-          open_file = {
-            resize_window = true,
-          },
-        },
-        renderer = {
-          root_folder_label = false,
-          highlight_git = false,
-          highlight_opened_files = "none",
-
-          indent_markers = {
-            enable = false,
-          },
-
-          icons = {
-            show = {
-              file = true,
-              folder = true,
-              folder_arrow = true,
-              git = true,
-            },
-
-            glyphs = {
-              default = "󰈔",
-              symlink = "󱁻",
-              folder = {
-                default = "󰉋",
-                empty = "󰉖",
-                empty_open = "󰷏",
-                open = "󰝰",
-                symlink = "󱁿",
-                symlink_open = "󱂀",
-                arrow_open = "",
-                arrow_closed = "",
-              },
-              git = {
-                unstaged = "✗",
-                staged = "✓",
-                unmerged = "",
-                renamed = "➜",
-                untracked = "★",
-                deleted = "󰆴",
-                ignored = "◌",
-              },
-            },
-          },
-        },
-      })
-    end,
-  },
+  -- {
+  --   "nvim-tree/nvim-tree.lua",
+  --   version = "*",
+  --   dependencies = {
+  --     "nvim-tree/nvim-web-devicons",
+  --     dependencies = {
+  --       "kbario/homerows.nvim",
+  --       opts = {
+  --         custom_keys = {
+  --           nvimtree = "l4"
+  --         }
+  --       }
+  --     },
+  --   },
+  --   keys = function()
+  --     local hr = require("homerows").lazy_hr()
+  --     return {
+  --       {
+  --         "<leader>" .. hr.nvimtree .. hr.r1,
+  --         "<cmd> NvimTreeToggle <CR>",
+  --         desc = " Nvim Tree: Open",
+  --       },
+  --       {
+  --         "<leader>" .. hr.nvimtree .. hr.r2,
+  --         "<cmd> NvimTreeFocus <CR>",
+  --         desc = " Nvim Tree: Focus",
+  --       },
+  --       {
+  --         "<leader>" .. hr.nvimtree .. hr.r3,
+  --         "<cmd> NvimTreeFindFile <CR>",
+  --         desc = " Nvim Tree: Nav to current file",
+  --       },
+  --       {
+  --         "<leader>" .. hr.nvimtree .. hr.r4,
+  --         "<cmd> NvimTreeCollapse <CR>",
+  --         desc = " Nvim Tree: Close",
+  --       }
+  --     }
+  --   end,
+  --   config = function()
+  --     require("nvim-tree").setup({
+  --       filters = {
+  --         dotfiles = true,
+  --       },
+  --       disable_netrw = true,
+  --       hijack_netrw = true,
+  --       hijack_cursor = true,
+  --       hijack_unnamed_buffer_when_opening = false,
+  --       sync_root_with_cwd = true,
+  --       update_focused_file = {
+  --         enable = true,
+  --         update_root = false,
+  --       },
+  --       view = {
+  --         adaptive_size = false,
+  --         side = "left",
+  --         width = 30,
+  --         preserve_window_proportions = true,
+  --       },
+  --       git = {
+  --         enable = true,
+  --         ignore = true,
+  --       },
+  --       filesystem_watchers = {
+  --         enable = true,
+  --       },
+  --       actions = {
+  --         open_file = {
+  --           resize_window = true,
+  --         },
+  --       },
+  --       renderer = {
+  --         root_folder_label = false,
+  --         highlight_git = false,
+  --         highlight_opened_files = "none",
+  --
+  --         indent_markers = {
+  --           enable = false,
+  --         },
+  --
+  --         icons = {
+  --           show = {
+  --             file = true,
+  --             folder = true,
+  --             folder_arrow = true,
+  --             git = true,
+  --           },
+  --
+  --           glyphs = {
+  --             default = "󰈔",
+  --             symlink = "󱁻",
+  --             folder = {
+  --               default = "󰉋",
+  --               empty = "󰉖",
+  --               empty_open = "󰷏",
+  --               open = "󰝰",
+  --               symlink = "󱁿",
+  --               symlink_open = "󱂀",
+  --               arrow_open = "",
+  --               arrow_closed = "",
+  --             },
+  --             git = {
+  --               unstaged = "✗",
+  --               staged = "✓",
+  --               unmerged = "",
+  --               renamed = "➜",
+  --               untracked = "★",
+  --               deleted = "󰆴",
+  --               ignored = "◌",
+  --             },
+  --           },
+  --         },
+  --       },
+  --     })
+  --   end,
+  -- },
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
