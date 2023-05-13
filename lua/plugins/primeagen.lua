@@ -1,4 +1,3 @@
-local utes = require("utils")
 return {
   {
     "ThePrimeagen/harpoon",
@@ -20,13 +19,13 @@ return {
       return {
         {
           "<leader>" .. hr.prime .. hr.r0,
-          function() require("harpoon.mark").add_file() end,
-          desc = "󰠳 Harpoon: Add a mark"
+          function() require("harpoon.ui").toggle_quick_menu() end,
+          desc = "󰠳 Harpoon: Open list"
         },
         {
           "<leader>" .. hr.prime .. hr.R0,
-          function() require("harpoon.ui").toggle_quick_menu() end,
-          desc = "󰠳 Harpoon: Open list"
+          function() require("harpoon.mark").add_file() end,
+          desc = "󰠳 Harpoon: Add a mark"
         },
         {
           "<leader>" .. hr.prime .. hr.r1,

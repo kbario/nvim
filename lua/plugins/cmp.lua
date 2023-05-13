@@ -101,14 +101,11 @@ return {
         mapping = {
           ["<C-k>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Select },
           ["<C-j>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Select },
-          -- ["<C-k>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert }, -- literally inserts the item not just virtual text
-          -- ["<C-j>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
           ["<C-u>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
           ["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
           ["<C-e>"] = cmp.config.disable,
           ['<C-y>'] = cmp.mapping.confirm { select = true },
           ["<CR>"] = cmp.mapping.confirm { select = false },
-          -- ["<Esc>"] = cmp.mapping { i = cmp.mapping.abort(), c = cmp.mapping.close() },
         },
         sources = cmp.config.sources {
           { name = "nvim_lsp", priority = 1000 },
@@ -119,5 +116,9 @@ return {
         },
       }
     end,
+    config = function(_, opts)
+      require('cmp').setup(opts)
+      vim.g.cmp_enabled = true
+    end
   },
 }

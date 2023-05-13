@@ -1,120 +1,126 @@
 return {
-  -- {
-  --   "nvim-tree/nvim-tree.lua",
-  --   version = "*",
-  --   dependencies = {
-  --     "nvim-tree/nvim-web-devicons",
-  --     dependencies = {
-  --       "kbario/homerows.nvim",
-  --       opts = {
-  --         custom_keys = {
-  --           nvimtree = "l4"
-  --         }
-  --       }
-  --     },
-  --   },
-  --   keys = function()
-  --     local hr = require("homerows").lazy_hr()
-  --     return {
-  --       {
-  --         "<leader>" .. hr.nvimtree .. hr.r1,
-  --         "<cmd> NvimTreeToggle <CR>",
-  --         desc = " Nvim Tree: Open",
-  --       },
-  --       {
-  --         "<leader>" .. hr.nvimtree .. hr.r2,
-  --         "<cmd> NvimTreeFocus <CR>",
-  --         desc = " Nvim Tree: Focus",
-  --       },
-  --       {
-  --         "<leader>" .. hr.nvimtree .. hr.r3,
-  --         "<cmd> NvimTreeFindFile <CR>",
-  --         desc = " Nvim Tree: Nav to current file",
-  --       },
-  --       {
-  --         "<leader>" .. hr.nvimtree .. hr.r4,
-  --         "<cmd> NvimTreeCollapse <CR>",
-  --         desc = " Nvim Tree: Close",
-  --       }
-  --     }
-  --   end,
-  --   config = function()
-  --     require("nvim-tree").setup({
-  --       filters = {
-  --         dotfiles = true,
-  --       },
-  --       disable_netrw = true,
-  --       hijack_netrw = true,
-  --       hijack_cursor = true,
-  --       hijack_unnamed_buffer_when_opening = false,
-  --       sync_root_with_cwd = true,
-  --       update_focused_file = {
-  --         enable = true,
-  --         update_root = false,
-  --       },
-  --       view = {
-  --         adaptive_size = false,
-  --         side = "left",
-  --         width = 30,
-  --         preserve_window_proportions = true,
-  --       },
-  --       git = {
-  --         enable = true,
-  --         ignore = true,
-  --       },
-  --       filesystem_watchers = {
-  --         enable = true,
-  --       },
-  --       actions = {
-  --         open_file = {
-  --           resize_window = true,
-  --         },
-  --       },
-  --       renderer = {
-  --         root_folder_label = false,
-  --         highlight_git = false,
-  --         highlight_opened_files = "none",
-  --
-  --         indent_markers = {
-  --           enable = false,
-  --         },
-  --
-  --         icons = {
-  --           show = {
-  --             file = true,
-  --             folder = true,
-  --             folder_arrow = true,
-  --             git = true,
-  --           },
-  --
-  --           glyphs = {
-  --             default = "󰈔",
-  --             symlink = "󱁻",
-  --             folder = {
-  --               default = "󰉋",
-  --               empty = "󰉖",
-  --               empty_open = "󰷏",
-  --               open = "󰝰",
-  --               symlink = "󱁿",
-  --               symlink_open = "󱂀",
-  --               arrow_open = "",
-  --               arrow_closed = "",
-  --             },
-  --             git = {
-  --               unstaged = "✗",
-  --               staged = "✓",
-  --               unmerged = "",
-  --               renamed = "➜",
-  --               untracked = "★",
-  --               deleted = "󰆴",
-  --               ignored = "◌",
-  --             },
-  --           },
-  --         },
-  --       },
-  --     })
-  --   end,
-  -- },
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+      "MunifTanjim/nui.nvim",
+      {
+        "kbario/homerows.nvim",
+        opts = {
+          custom_keys = {
+            neotree = "l4"
+          }
+        }
+      }
+    },
+    cmd = "Neotree",
+    keys = function()
+      local hr = require("homerows").lazy_hr()
+      return {
+        {
+          "<leader>" .. hr.neotree .. hr.r1,
+          "<cmd> NeoTreeToggle <CR>",
+          desc = " NeoTree: Open",
+        },
+        {
+          "<leader>" .. hr.neotree .. hr.r2,
+          "<cmd> NvimTreeFocus <CR>",
+          desc = " NeoTree: Focus",
+        },
+        {
+          "<leader>" .. hr.neotree .. hr.r3,
+          "<cmd> NvimTreeFindFile <CR>",
+          desc = " NeoTree: Nav to current file",
+        },
+        {
+          "<leader>" .. hr.neotree .. hr.r4,
+          "<cmd> NvimTreeCollapse <CR>",
+          desc = " NeoTree: Close",
+        }
+      }
+    end,
+    deactivate = function()
+      vim.cmd([[Neotree close]])
+    end,
+    init = function()
+      vim.g.neo_tree_remove_legacy_commands = 1
+      if vim.fn.argc() == 1 then
+        local stat = vim.loop.fs_stat(vim.fn.argv(0))
+        if stat and stat.type == "directory" then
+          require("neo-tree")
+        end
+      end
+    end,
+    opts = {
+      filesystem = {
+        filtered_items = {
+          hide_dotfiles = true,
+        },
+        bind_to_cwd = false,
+        follow_current_file = true,
+        use_libuv_file_watcher = true,
+        components = {
+          harpoon_index = function(config, node, state)
+            local Marked = require("harpoon.mark")
+            local path = node:get_id()
+            local succuss, index = pcall(Marked.get_index_of, path)
+            if succuss and index and index > 0 then
+              return {
+                text = string.format(" 󱡅 %d", index), -- <-- Add your favorite harpoon like arrow here
+                highlight = config.highlight or "NeoTreeDirectoryIcon",
+              }
+            else
+              return {}
+            end
+          end
+        },
+        renderers = {
+          file = {
+            { "indent" },
+            { "icon" },
+            {
+              "container",
+              content = {
+                {
+                  "name",
+                  zindex = 10
+                },
+                { "clipboard",     zindex = 10 },
+                { "bufnr",         zindex = 10 },
+                { "harpoon_index", zindex = 20, align = "right" },
+                { "modified",      zindex = 20, align = "right" },
+                { "diagnostics",   zindex = 20, align = "right" },
+                { "git_status",    zindex = 20, align = "right" },
+              },
+            },
+          },
+        }
+      },
+      window = {
+        mappings = {
+          ["<space>"] = "none",
+        },
+      },
+      default_component_configs = {
+        indent = {
+          with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
+          expander_collapsed = "",
+          expander_expanded = "",
+          expander_highlight = "NeoTreeExpander",
+          -- padding = 0,
+          -- indent_size = 1
+        },
+        icon = {
+          folder_closed = "󰉋",
+          folder_open = "󰝰",
+          folder_empty = "󰉖",
+          folder_empty_open = "󰷏",
+        },
+        modified = { symbol = "󱇧" },
+      },
+    },
+  },
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
@@ -232,7 +238,7 @@ return {
     opts = {
       char = "│",
       buftype_exclude = { "terminal" },
-      filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "terminal" },  -- "NvimTree" },
+      filetype_exclude = { "help", "alpha", "dashboard", "neo-tree", "Trouble", "lazy", "terminal" }, -- "NvimTree" },
       indentLine_enabled = 1,
       show_trailing_blankline_indent = false,
       show_first_indent_level = false,
@@ -240,17 +246,25 @@ return {
       show_current_context = true,
       show_current_context_start = true,
     },
+    config = function(_, opts)
+      -- vim.opt.list = true
+      -- vim.opt.listchars:append "space:⋅"
+      -- vim.opt.listchars:append "eol:↴"
+
+      require("indent_blankline").setup(opts)
+    end
   },
   {
     "j-hui/fidget.nvim",
     opts = {
       text = {
-        spinner = "dots_snake", -- animation shown when tasks are ongoing
-        done = "",       -- character shown when all tasks are complete
-        commenced = "Started", -- message shown when task starts
+        spinner = "dots_snake",  -- animation shown when tasks are ongoing
+        done = "",            -- character shown when all tasks are complete
+        commenced = "Started",   -- message shown when task starts
         completed = "Completed", -- message shown when task completes
       },
     },
     event = "BufEnter",
   }
+
 }

@@ -13,7 +13,6 @@ vim.opt.rtp:prepend(lazypath)
 
 vim.opt.nu = true
 vim.opt.relativenumber = true
-vim.g.cmp_enabled = true
 
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
@@ -22,17 +21,6 @@ vim.opt.expandtab = true
 vim.opt.hlsearch = false
 vim.opt.incsearch = true
 vim.opt.conceallevel = 3 -- Hide * markup for bold and italic
-
--- lukas-reineke/indent-blankline.nvim
--- vim.opt.list = true
--- vim.opt.listchars:remove "space"
--- vim.opt.listchars:append "eol:↴"
--- vim.opt.listchars:remove "tab"
-
-vim.o.foldcolumn = '1' -- '0' is not bad
-vim.o.foldlevel = 99   -- Using ufo provider need a large value, feel free to decrease the value
-vim.o.foldlevelstart = 99
-vim.o.foldenable = true
 
 vim.opt.smartindent = true
 
@@ -72,10 +60,10 @@ require("lazy").setup("plugins", {
         "getscriptPlugin",
         "gzip",
         "logipat",
-        -- "netrw",
-        -- "netrwPlugin",
-        -- "netrwSettings",
-        -- "netrwFileHandlers",
+        "netrw",
+        "netrwPlugin",
+        "netrwSettings",
+        "netrwFileHandlers",
         "matchit",
         "tar",
         "tarPlugin",

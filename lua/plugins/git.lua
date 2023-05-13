@@ -4,16 +4,6 @@ return {
 		event = { "BufReadPre", "BufNewFile" },
 		enabled = vim.fn.executable "git" == 1,
 		ft = "gitcommit",
-		opts = {
-			signs = {
-				add = { text = "▎" },
-				change = { text = "▎" },
-				delete = { text = "" },
-				topdelete = { text = "‾" },
-				changedelete = { text = "~" },
-				untracked = { text = "▎" },
-			},
-		},
 		on_attach = function(buffer)
 			local gs = package.loaded.gitsigns
 
@@ -35,6 +25,7 @@ return {
 			map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
 			map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
 		end,
+    config = true,
 	},
 	-- {
 	-- 	"sindrets/diffview.nvim",
