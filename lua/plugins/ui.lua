@@ -20,22 +20,12 @@ return {
       return {
         {
           "<leader>" .. hr.neotree .. hr.r1,
-          "<cmd> NeoTreeToggle <CR>",
+          "<cmd> Neotree <CR>",
           desc = " NeoTree: Open",
         },
         {
-          "<leader>" .. hr.neotree .. hr.r2,
-          "<cmd> NvimTreeFocus <CR>",
-          desc = " NeoTree: Focus",
-        },
-        {
-          "<leader>" .. hr.neotree .. hr.r3,
-          "<cmd> NvimTreeFindFile <CR>",
-          desc = " NeoTree: Nav to current file",
-        },
-        {
           "<leader>" .. hr.neotree .. hr.r4,
-          "<cmd> NvimTreeCollapse <CR>",
+          "<cmd> Neotree close <CR>",
           desc = " NeoTree: Close",
         }
       }

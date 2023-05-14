@@ -14,39 +14,39 @@ local M = {}
 
 ---@type Client[]
 local configs = {
-  arduino    = { treesitter = { "arduino" }, lsp = { arduino_language_server = {}, } },
+  -- arduino    = { treesitter = { "arduino" }, lsp = { arduino_language_server = {}, } },
   astro      = { treesitter = { "astro" }, lsp = { astro = {} } },
   bash       = { treesitter = { "bash" }, lsp = { bashls = {}, powershell_es = {} }, dap = { "bash" } },
-  c          = { treesitter = { "c", "cmake", "make" }, lsp = {}, formatter = {}, dap = { "cppdbg" } },
-  c_sharp    = { treesitter = { "c_sharp" }, lsp = { omnisharp = {}, }, formatter = { "csharpier" } },
+  -- c          = { treesitter = { "c", "cmake", "make" }, lsp = {}, formatter = {}, dap = { "cppdbg" } },
+  -- c_sharp    = { treesitter = { "c_sharp" }, lsp = { omnisharp = {}, }, formatter = { "csharpier" } },
   comment    = { treesitter = { "comment" }, lsp = {}, formatter = {} },
   css        = { treesitter = { "css", "scss" }, lsp = { cssls = {}, cssmodules_ls = false, tailwindcss = {}, }, },
-  dockerfile = { treesitter = { "dockerfile" }, lsp = {}, formatter = {} },
-  dot        = { treesitter = { "dot" }, lsp = {}, formatter = {} },
-  elixir     = { treesitter = { "elixir" }, lsp = {}, formatter = {} },
-  fennel     = { treesitter = { "fennel" }, lsp = { fennel_language_server = {} } },
-  fish       = { treesitter = { "fish" } },
+  -- dockerfile = { treesitter = { "dockerfile" }, lsp = {}, formatter = {} },
+  -- dot        = { treesitter = { "dot" }, lsp = {}, formatter = {} },
+  -- elixir     = { treesitter = { "elixir" }, lsp = {}, formatter = {} },
+  -- fennel     = { treesitter = { "fennel" }, lsp = { fennel_language_server = {} } },
+  -- fish       = { treesitter = { "fish" } },
   git        = {
     treesitter = { "git_config", "git_rebase", "gitattributes", "gitcommit", "gitignore", "diff" },
     other = { "gh" },
   },
-  go         = {
-    treesitter = { "go", "gomod", "gosum", "gowork" },
-    lsp = {
-      gopls = {
-        config = {
-          cmd = { "gopls", "serve" },
-          settings = { gopls = { analyses = { unusedparams = true, }, staticcheck = true, }, },
-        },
-      },
-    },
-    formatter = { "gofumpt" },
-    dap = { "delve" }
-  },
-  graphql    = { treesitter = { "graphql" }, lsp = { graphql = {} } },
+  -- go         = {
+  --   treesitter = { "go", "gomod", "gosum", "gowork" },
+  --   lsp = {
+  --     gopls = {
+  --       config = {
+  --         cmd = { "gopls", "serve" },
+  --         settings = { gopls = { analyses = { unusedparams = true, }, staticcheck = true, }, },
+  --       },
+  --     },
+  --   },
+  --   formatter = { "gofumpt" },
+  --   dap = { "delve" }
+  -- },
+  -- graphql    = { treesitter = { "graphql" }, lsp = { graphql = {} } },
   -- help       = { treesitter = { "help" }},
   html       = { treesitter = { "html" }, lsp = { emmet_ls = {}, html = {} } },
-  http       = { treesitter = { "http" } },
+  -- http       = { treesitter = { "http" } },
   javascript = {
     treesitter = { "javascript", "jsdoc", "typescript", "tsx" },
     lsp = {
@@ -126,10 +126,10 @@ local configs = {
     -- dap = { "node2" } --"chrome", --"firefox", --"js" } },
   },
   json       = { treesitter = { "json", "json5", "JSON", "jsonc" }, lsp = { jsonls = {}, } },
-  julia      = { treesitter = { "julia" } },
-  kotlin     = { treesitter = { "kotlin" } },
+  -- julia      = { treesitter = { "julia" } },
+  -- kotlin     = { treesitter = { "kotlin" } },
   latex      = { treesitter = { "latex" } },
-  llvm       = { treesitter = { "llvm" } },
+  -- llvm       = { treesitter = { "llvm" } },
   lua        = {
     treesitter = { "lua", "luadoc", "luau" },
     lsp = {
@@ -164,12 +164,12 @@ local configs = {
     formatter = { "markdown-toc", "markdowlint" }
   },
   mermaid    = { treesitter = { "mermaid" } },
-  ocaml      = { treesitter = { "ocaml", "ocaml_interface", "ocamllex" } },
-  prisma     = { treesitter = { "prisma" }, lsp = { prismals = false, } },
-  python     = { treesitter = { "python" }, lsp = { jedi_language_server = {}, }, dap = { "python" } },
+  -- ocaml      = { treesitter = { "ocaml", "ocaml_interface", "ocamllex" } },
+  -- prisma     = { treesitter = { "prisma" }, lsp = { prismals = false, } },
+  -- python     = { treesitter = { "python" }, lsp = { jedi_language_server = {}, }, dap = { "python" } },
   prettier   = { formatter = { "prettier", "prettierd" }, },
-  r          = { treesitter = { "r" }, lsp = { r_language_server = {}, } },
-  regex      = { treesitter = { "regex" } },
+  -- r          = { treesitter = { "r" }, lsp = { r_language_server = {}, } },
+  -- regex      = { treesitter = { "regex" } },
   rust       = {
     treesitter = { "rust" },
     lsp = {
@@ -196,17 +196,16 @@ local configs = {
     },
     dap = { "codelldb", "cppdbg" }
   },
-  scala      = { treesitter = { "scala" } },
+  -- scala      = { treesitter = { "scala" } },
   scheme     = { treesitter = { "scheme" } },
   sql        = { treesitter = { "sql" }, lsp = { sqlls = {}, } },
-  svelte     = { treesitter = { "svelte" }, lsp = { svelte = {}, } },
-  swift      = { treesitter = { "swift" } },
+  -- svelte     = { treesitter = { "svelte" }, lsp = { svelte = {}, } },
+  -- swift      = { treesitter = { "swift" } },
   todotxt    = { treesitter = { "todotxt" } },
   toml       = { treesitter = { "toml" } },
-  vim        = { treesitter = { "vim" }, lsp = { vimls = {}, } },
-  vimdoc     = { treesitter = { "vimdoc" } },
+  vim        = { treesitter = { "vim", "vimdoc" }, lsp = { vimls = {}, } },
   yaml       = { treesitter = { "yaml" }, lsp = { yamlls = {}, azure_pipelines_ls = {} } },
-  zig        = { treesitter = { "zig" }, lsp = { zls = {} } },
+  -- zig        = { treesitter = { "zig" }, lsp = { zls = {} } },
   treesitter = { other = { "tree-sitter-cli" } },
 }
 

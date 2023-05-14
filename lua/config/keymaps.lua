@@ -15,11 +15,11 @@ map("n", "<leader><leader>h", function()
 end, { desc = "󰀄 Me: Prints hello world" })
 
 -- format
-map("n", "<leader>" .. hr.me .. hr.r1, function()
+map("n", "<leader>" .. hr.r1t, function()
   vim.lsp.buf.format({ async = true })
 end, { desc = "󰀄 Me: Format document" })
 
-map("n", "<leader>" .. hr.me .. hr.R1, function()
+map("n", "<leader>" .. hr.R1t, function()
   vim.cmd(":w")
   local cdub = vim.loop.cwd()
   local jsbeautifyrc = pth:new(string.format("%s/.jsbeautifyrc.json", cdub))
@@ -32,17 +32,6 @@ map("n", "<leader>" .. hr.me .. hr.R1, function()
     print("beautified")
   end
 end, { desc = "󰀄 Me: Jsbeautifyrc formatting" })
-
--- easy find and replace that asks if you want to replace each found word
--- nnoremap("<leader>" .. hr.l1t .. hr.r2,
---   function()
---     local fnd = vim.fn.input "find: "
---     local fnd = vim.api.nvim_exec('echo expand("<cword>")', true)
---     local rpl = vim.fn.input "replace: "
---     vim.cmd(":%s/" .. fnd .. "/" .. rpl .. "/gc") -- remove c to replace all
---   end,
---   { desc = "find and replace with individual confirm" }
--- )
 
 -- source this file
 map("n", "<leader><leader>s", "<cmd>source %<CR><cmd>echo 'sourced'<CR>",
@@ -74,12 +63,12 @@ map("n", "n", "nzzzv", { desc = "󰀄 Me: Next forward vertically center aligned
 map("n", "N", "Nzzzv", { desc = "󰀄 Me: Next backward vertically center aligned" })
 
 -- yank to clipboard
-map("v", "<leader>" .. hr.me .. hr.r2, "\"+y", { desc = "󰀄 Me: Copy to clipbaord" })
-map("v", "<leader>" .. hr.me .. hr.R2, "\"+Y", { desc = "󰀄 Me: Copy to clipbaord" })
+map("v", "<leader>" .. hr.r2t, "\"+y", { desc = "󰀄 Me: Copy to clipbaord" })
+map("v", "<leader>" .. hr.R2t, "\"+Y", { desc = "󰀄 Me: Copy to clipbaord" })
 -- paste without loosing yank
-map("x", "<leader>" .. hr.me .. hr.r3, "\"_dP", { desc = "󰀄 Me: Paste without loosing yank" })
+map("x", "<leader>" .. hr.r3t, "\"_dP", { desc = "󰀄 Me: Paste without loosing yank" })
 -- delete without loosing yank
-map("x", "<leader>" .. hr.me .. hr.r4, "\"_d", { desc = "󰀄 Me: Delete without loosing yank" })
+map("x", "<leader>" .. hr.r4t, "\"_d", { desc = "󰀄 Me: Delete without loosing yank" })
 
 map("n", vim.g.mapleader .. hr.l4t .. hr.l4t, function()
   -- get current file name which should be the module you wish to add the comp to
