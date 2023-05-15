@@ -280,11 +280,11 @@ return {
         segments = {
           { text = { builtin.foldfunc, " " }, click = "v:lua.ScFa" },
           {
-            sign = { name = { ".*" },  },
+            sign = { name = { ".*" }, },
             click = "v:lua.ScSa"
           },
           {
-            sign = { name = { "Diagnostic" },},
+            sign = { name = { "Diagnostic" }, },
             click = "v:lua.ScSa"
           },
           { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
@@ -351,7 +351,7 @@ return {
         "kbario/homerows.nvim",
         opts = {
           custom_keys = {
-            sj = "r3t"
+            sj = "l3t"
           }
         }
       }
@@ -360,7 +360,24 @@ return {
       local hr = require("homerows").lazy_hr()
       return {
         {
-          "<leader>" .. hr.sj .. hr.l1
+          "<leader>" .. hr.sj .. hr.r1,
+          require('treesj').toggle,
+          "󰅩 TreeSJ: Toggle",
+        },
+        {
+          "<leader>" .. hr.sj .. hr.R1,
+          function() require('treesj').toggle({ split = { recursive = true } }) end,
+          "󰅩 TreeSJ: Toggle",
+        },
+        {
+          "<leader>" .. hr.sj .. hr.r2,
+          require('treesj').split,
+          "󰅩 TreeSJ: Split",
+        },
+        {
+          "<leader>" .. hr.sj .. hr.r3,
+          require('treesj').join,
+          "󰅩 TreeSJ: Join",
         }
       }
     end,

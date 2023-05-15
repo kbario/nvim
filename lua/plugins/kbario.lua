@@ -33,9 +33,6 @@ return {
       prefs = { "programmers_dvorak", "colemak_dh" },
       add_to_keymap = false,
       add_are_keymap = false,
-      custom_keys = {
-        me = "l1t",
-      },
     },
     lazy = false,
     priority = 10000,
