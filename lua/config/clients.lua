@@ -160,7 +160,7 @@ local configs = {
   },
   markdown   = {
     treesitter = { "markdown", "markdown_inline" },
-    lsp = { marksman = {}, },
+    lsp = { marksman = {}, mdx_analyzer = {} },
     formatter = { "markdown-toc", "markdowlint" }
   },
   mermaid    = { treesitter = { "mermaid" } },

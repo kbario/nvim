@@ -139,9 +139,9 @@ return {
       "williamboman/mason-lspconfig.nvim",
       {
         "hrsh7th/cmp-nvim-lsp",
-        cond = function()
-          return require("lazy.core.config").plugins["nvim-cmp"] ~= nil
-        end,
+        -- cond = function()
+        --   return require("lazy.core.config").plugins["nvim-cmp"] ~= nil
+        -- end,
       },
       {
         "kbario/homerows.nvim",

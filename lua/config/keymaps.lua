@@ -74,21 +74,23 @@ map("n", vim.g.mapleader .. hr.l4t .. hr.l4t, function()
   -- get current file name which should be the module you wish to add the comp to
   local module = vim.api.nvim_buf_get_name(0)
   -- -- is standalone?
-  -- local isStandaloneInput = vim.fn.input("standalone component? y/n > ")
-  -- local isStandalone
-  -- if isStandaloneInput == "y" then
-  --   isStandalone = true
-  -- else
-  --   isStandalone = false
-  -- end
-  -- -- is in current module or top level?
-  -- local isInCurrentModuleInput = vim.fn.input("put in current module? (else app module) y/n > ")
-  -- local isInCurrentModule
-  -- if isInCurrentModuleInput == "y" then
-  --   isInCurrentModule = true
-  -- else
-  --   isInCurrentModule = false
-  -- end
+  local isStandaloneInput = vim.fn.input("standalone component? y/n > ")
+  local isStandalone
+  if isStandaloneInput == "y" then
+    isStandalone = true
+  else
+    isStandalone = false
+  end
+  local isInCurrentModule = false
+  if not isStandalone then isInCurrentModule = true end
+  -- is in current module or top level?
+  local isInCurrentModuleInput = vim.fn.input("put in current module? (else app module) y/n > ")
+  local isInCurrentModule
+  if isInCurrentModuleInput == "y" then
+    isInCurrentModule = true
+  else
+    isInCurrentModule = false
+  end
   -- get the path of the module without the module in it
   local module_path = vim.fn.fnamemodify(module, ':p:.:h'):gsub('src/app/', ''):gsub('src\\app\\', '')
   -- get the module file name
@@ -118,5 +120,60 @@ map("n", vim.g.mapleader .. hr.l4t .. hr.l4t, function()
   -- print the command
   print(string.format(':!ng g %s %s -m %s', type, new_comp_path, module))
   -- run the command
-  -- vim.cmd(string.format(':!ng g %s %s -m %s', type, new_comp_path, module))
+  vim.cmd(string.format(':!ng g %s %s -m %s', type, new_comp_path, module))
 end, { desc = "jsbeautifyrc formatting" })
+
+local comp_tbl = {
+  ['p'] = "pipes",
+  ['c'] = "components",
+}
+
+--- make a angular component or pipe
+---@param type "p" | "c"
+---@param isStandalone boolean
+---@param currentModule boolean
+---@param file_loc boolean | string
+local function pc(type, isStandalone, currentModule, file_loc)
+  ---@type string
+  local type_path = comp_tbl[type]
+  ---@type boolean
+  local isModule
+  ---@type string
+  local module
+  ---@type string
+  local module_path
+  ---@type string
+  local file_path
+  ---@type string
+  local option
+
+
+  local cur_path_file = vim.api.nvim_buf_get_name(0)
+  local cur_path_dir = vim.fn.fnamemodify(cur_path_file, ':p:.:h'):gsub('src/app/', ''):gsub('src\\app\\', '')
+
+  if isStandalone then
+    option = "--standalone=true"
+
+  else
+    if currentModule then
+      module = vim.api.nvim_buf_get_name(0)
+      module_path = vim.fn.fnamemodify(module, ':p:.:h'):gsub('src/app/', ''):gsub('src\\app\\', '')
+      -- get the module file name
+      module = vim.fn.fnamemodify(module, ':p:.'):gsub('src/app/', ''):gsub('src\\app\\', '')
+      option = string.format('-m %s', module)
+    else
+      option = string.format('-m %s', "app.module.ts")
+    end
+  end
+
+  print(string.format('ng g %s %s %s', type, file_path, option))
+end
+
+-- module
+--  routing
+--  name
+-- pipe
+--  standalone
+-- service
+-- component
+--  standalone
