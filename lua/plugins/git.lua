@@ -13,7 +13,9 @@ return {
     enabled = vim.fn.executable "git" == 1,
     ft = "gitcommit",
     on_attach = function(buffer)
-      local hr = require("homerows").lazy_hr()
+      local ok, hrr = pcall(require, "homerows")
+      if not ok then return end
+      local hr = hrr.lazy_hr()
       local gs = package.loaded.gitsigns
 
       local function map(mode, l, r, desc)

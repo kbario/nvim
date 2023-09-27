@@ -69,7 +69,9 @@ return {
       }
     },
     keys = function()
-      local hr = require("homerows").lazy_hr()
+      local ok, hrr = pcall(require, "homerows")
+      if not ok then return end
+      local hr = hrr.lazy_hr()
       return {
         {
           "<leader>" .. hr.surround_n,
@@ -154,7 +156,9 @@ return {
       }
     },
     keys = function()
-      local hr = require("homerows").lazy_hr()
+      local ok, hrr = pcall(require, "homerows")
+      if not ok then return end
+      local hr = hrr.lazy_hr()
       return { { "<leader>" .. hr.symbol_outline, "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } }
     end,
     config = true,
@@ -188,7 +192,9 @@ return {
       }
     },
     keys = function()
-      local hr = require("homerows").lazy_hr()
+      local ok, hrr = pcall(require, "homerows")
+      if not ok then return end
+      local hr = hrr.lazy_hr()
       return {
         {
           "<leader>" .. hr.leap_to,
@@ -357,7 +363,9 @@ return {
       }
     },
     keys = function()
-      local hr = require("homerows").lazy_hr()
+      local ok, hrr = pcall(require, "homerows")
+      if not ok then return end
+      local hr = hrr.lazy_hr()
       return {
         {
           "<leader>" .. hr.sj .. hr.r1,

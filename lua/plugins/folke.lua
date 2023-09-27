@@ -14,7 +14,9 @@ return {
 			}
 		},
 		keys = function(_, keys)
-			local hr = require("homerows").lazy_hr()
+      local ok, hrr = pcall(require, "homerows")
+      if not ok then return end
+      local hr = hrr.lazy_hr()
 			local mappings = {
 				{
 					"<leader>" .. hr.folke .. hr.r1,
@@ -80,7 +82,9 @@ return {
 			}
 		},
 		keys = function(_, keys)
-			local hr = require("homerows").lazy_hr()
+      local ok, hrr = pcall(require, "homerows")
+      if not ok then return end
+      local hr = hrr.lazy_hr()
 			local mappings = {
 				{
 					"]t",
