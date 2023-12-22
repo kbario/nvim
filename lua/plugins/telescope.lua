@@ -13,9 +13,9 @@ return {
     },
   },
   keys = function(_, keys)
-      local ok, hrr = pcall(require, "homerows")
-      if not ok then return end
-      local hr = hrr.lazy_hr()
+    local ok, hrr = pcall(require, "homerows")
+    if not ok then return end
+    local hr = hrr.lazy_hr()
     local mappings = {
       -- find
       {
@@ -167,6 +167,7 @@ return {
     local actions = require "telescope.actions"
     local previewers = require("telescope.previewers")
     local sorters = require("telescope.sorters")
+    local flip_breakpoint = 100
 
     return {
       defaults = {
@@ -178,19 +179,21 @@ return {
         border = {},
         borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
         color_devicons = true,
-        layout_strategy = "horizontal",
+        layout_strategy = "flex",
         layout_config = {
           horizontal = {
             prompt_position = "top",
-            preview_width = 0.55,
-            results_width = 0.8, -- try delete to see what happens
+            preview_width = 0.6,
+            preview_cutoff = flip_breakpoint,
           },
           vertical = {
-            mirror = false,
+            prompt_position = "top",
+            mirror=true,
+            preview_height = 0.7,
           },
-          width = 0.87,
-          height = 0.80,
-          preview_cutoff = 120,
+          flip_columns = flip_breakpoint,
+          width = 0.90,
+          height = 0.90,
         },
         path_display = { "truncate" },
         set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
