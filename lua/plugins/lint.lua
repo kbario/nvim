@@ -4,44 +4,60 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
       local lint = require 'lint'
+      -- vim.env.ESLINT_D_PPID = vim.fn.getpid()
       lint.linters_by_ft = {
         markdown = { 'markdownlint' },
+        html = { 'eslint_d' },
+        javascript = { 'eslint_d' },
+        typescript = { 'eslint_d' },
+        javascriptreact = { 'eslint_d' },
+        typescriptreact = { 'eslint_d' },
       }
 
-      -- To allow other plugins to add linters to require('lint').linters_by_ft,
-      -- instead set linters_by_ft like this:
-      -- lint.linters_by_ft = lint.linters_by_ft or {}
-      -- lint.linters_by_ft['markdown'] = { 'markdownlint' }
-      --
-      -- However, note that this will enable a set of default linters,
-      -- which will cause errors unless these tools are available:
-      -- {
-      --   clojure = { "clj-kondo" },
-      --   dockerfile = { "hadolint" },
-      --   inko = { "inko" },
-      --   janet = { "janet" },
-      --   json = { "jsonlint" },
-      --   markdown = { "vale" },
-      --   rst = { "vale" },
-      --   ruby = { "ruby" },
-      --   terraform = { "tflint" },
-      --   text = { "vale" }
+      -- lint.linters.eslint_d.args = {
+      --   -- '--no-warn-ignored', -- <-- this is the key argument
+      --   '--format',
+      --   'json',
+      --   '--stdin',
+      --   '--stdin-filename',
+      --   function()
+      --     return vim.api.nvim_buf_get_name(0)
+      --   end,
       -- }
       --
-      -- You can disable the default linters by setting their filetypes to nil:
-      -- lint.linters_by_ft['clojure'] = nil
-      -- lint.linters_by_ft['dockerfile'] = nil
-      -- lint.linters_by_ft['inko'] = nil
-      -- lint.linters_by_ft['janet'] = nil
-      -- lint.linters_by_ft['json'] = nil
-      -- lint.linters_by_ft['markdown'] = nil
-      -- lint.linters_by_ft['rst'] = nil
-      -- lint.linters_by_ft['ruby'] = nil
-      -- lint.linters_by_ft['terraform'] = nil
-      -- lint.linters_by_ft['text'] = nil
-
-      -- Create autocommand which carries out the actual linting
-      -- on the specified events.
+      -- -- Create autocommand which carries out the actual linting
+      -- -- on the specified events.
+      -- local function find_nearest_node_modules_dir()
+      --   -- current buffer dir
+      --   local current_dir = vim.fn.expand '%:p:h'
+      --   while current_dir ~= '/' do
+      --     if vim.fn.isdirectory(current_dir .. '/node_modules') == 1 then
+      --       return current_dir
+      --     end
+      --     current_dir = vim.fn.fnamemodify(current_dir, ':h')
+      --   end
+      --   return nil
+      -- end
+      -- local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
+      --
+      -- vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
+      --   group = lint_augroup,
+      --   callback = function()
+      --     local ft = vim.bo.filetype
+      --     local js_types = { 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' }
+      --     if not vim.tbl_contains(js_types, ft) then
+      --       lint.try_lint()
+      --       return
+      --     end
+      --     local original_cwd = vim.fn.getcwd()
+      --     local node_modules_dir = find_nearest_node_modules_dir()
+      --     if node_modules_dir then
+      --       vim.cmd('cd ' .. node_modules_dir)
+      --     end
+      --     lint.try_lint()
+      --     vim.cmd('cd ' .. original_cwd)
+      --   end,
+      -- })
       local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
       vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
         group = lint_augroup,
@@ -54,6 +70,10 @@ return {
           end
         end,
       })
+
+      vim.keymap.set('n', '<leader>fl', function()
+        lint.try_lint()
+      end, { desc = 'Trigger linting for current file' })
     end,
   },
 }

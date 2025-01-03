@@ -1,11 +1,18 @@
 return {
+  -- { 'stevearc/overseer.nvim' },
   {
     'stevearc/oil.nvim',
     ---@module 'oil'
     ---@type oil.SetupOpts
-    opts = {},
-    keys = {
+    opts = {
+      default_file_explorer = true,
+      delete_to_trash = true,
 
+      view_options = {
+        show_hidden = true,
+      },
+    },
+    keys = {
       {
         '-',
         '<CMD>Oil<CR>',

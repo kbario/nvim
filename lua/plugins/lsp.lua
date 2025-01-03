@@ -133,7 +133,6 @@ return {
         astro = {},
         cssls = {},
         css_variables = {},
-        eslint = {},
         lua_ls = {
           -- cmd = { ... },
           -- filetypes = { ... },
@@ -163,10 +162,11 @@ return {
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        'stylua',
+        'eslint_d',
+        'markdownlint',
         'prettierd',
         'prettier',
-        'markdownlint',
+        'stylua',
         'typescript-language-server',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
