@@ -55,9 +55,12 @@ return {
         }
       end,
       formatters_by_ft = {
-        lua = { 'stylua' },
+        astro = { 'prettierd', 'prettier', stop_after_first = true },
+        html = { 'prettierd', 'prettier', stop_after_first = true },
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
-        astro = { 'prettier' },
+        json = { 'prettierd', 'prettier', stop_after_first = true },
+        lua = { 'stylua' },
+        typescript = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },

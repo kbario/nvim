@@ -43,11 +43,44 @@ vim.keymap.set({ 'i', 't' }, '<C-l>', '<C-\\><C-N><C-w>l', { desc = 'Move focus 
 vim.keymap.set({ 'i', 't' }, '<C-j>', '<C-\\><C-N><C-w>j', { desc = 'Move focus to the lower window' })
 vim.keymap.set({ 'i', 't' }, '<C-k>', '<C-\\><C-N><C-w>k', { desc = 'Move focus to the upper window' })
 
-vim.keymap.set('n', '<space>to', function()
-  vim.cmd.vnew()
-  vim.cmd.term()
-  vim.cmd.wincmd 'J'
-  vim.api.nvim_win_set_height(0, 5)
+local state = { win = -1, buf = -1 }
 
-  job_id = vim.bo.channel
-end)
+local toggle_terminal = function(letter)
+  state[letter] = -1
+  return function()
+    -- if win is open and the current buffer equals the requested then close
+    if vim.api.nvim_win_is_valid(state.win) and state.buf == state[letter] then
+      vim.api.nvim_win_close(state.win, false)
+      state.win = -1
+      state.buf = -1
+      return
+    end
+
+    -- if the requested buffer doesn't exist, make it
+    if not vim.api.nvim_buf_is_valid(state[letter]) then
+      state[letter] = vim.api.nvim_create_buf(false, true) -- No file, scratch buffer
+      state.buf = state[letter]
+    end
+
+    -- Define window configuration
+    local win_config = { split = 'right', width = 75 }
+
+    if vim.api.nvim_win_is_valid(state.win) then
+      vim.api.nvim_win_set_buf(state.win, state[letter])
+      state.buf = state[letter]
+    else
+      -- Create the window with the requested buffer
+      state.win = vim.api.nvim_open_win(state[letter], true, win_config)
+      state.buf = state[letter]
+    end
+
+    -- make it a terminal if not already
+    if vim.bo[state[letter]].buftype ~= 'terminal' then
+      vim.cmd.terminal()
+    end
+  end
+end
+
+for _, letter in ipairs { 'n', 'e' } do
+  vim.keymap.set('n', '<space>p' .. letter, toggle_terminal(letter))
+end

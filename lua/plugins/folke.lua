@@ -120,10 +120,10 @@ return {
     dependencies = { 'nvim-lua/plenary.nvim' },
     opts = {
       keywords = {
-        -- FLAG = {
-        --   icon = '󰈸', -- icon used for the sign, and in search results
-        --   color = 'error', -- can be a hex color, or a named color (see below)
-        -- },
+        FEATURE_FLAG_REMOVAL = {
+          icon = '',
+          color = 'warning', -- can be a hex color, or a named color (see below)
+        },
       },
       merge_keywords = true,
     },

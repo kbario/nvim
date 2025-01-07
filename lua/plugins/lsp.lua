@@ -13,23 +13,85 @@ return {
       -- Allows extra capabilities provided by nvim-cmp
       'saghen/blink.cmp',
     },
+    -- Enable the following language servers
+    --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
+    --
+    --  Add any additional override configuration in the following tables. Available keys are:
+    --  - cmd (table): Override the default command used to start the server
+    --  - filetypes (table): Override the default list of associated filetypes for the server
+    --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
+    --  - settings (table): Override the default settings passed when initializing the server.
+    --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
     opts = {
       servers = {
-        lua_ls = {},
+        angularls = {
+          filetypes = { 'typescript', 'html', 'typescriptreact', 'typescript.tsx', 'htmlangular', 'css', 'scss' },
+          keys = {
+            {
+              '<leader>rn',
+              function()
+                require('spear.spear').spear { '.component.ts', '.service.ts', '.pipe.ts' }
+              end,
+              '󱡅 Spear: to main file',
+            },
+            {
+              '<leader>re',
+              function()
+                require('spear.spear').spear '.component.html'
+              end,
+              '󱡅 Spear: to template',
+            },
+            {
+              '<leader>ri',
+              function()
+                require('spear.spear').spear { '.component.css', '.component.scss', '.component.sass', '.css' }
+              end,
+              '󱡅 Spear: to styles',
+            },
+            {
+              '<leader>ro',
+              function()
+                require('spear.spear').spear { '.component.spec.ts', '.service.spec.ts', '.pipe.spec.ts' }
+              end,
+              '󱡅 Spear: to tests',
+            },
+          },
+        },
+        astro = {},
+        cssls = {},
+        css_variables = {},
+        ['json-lsp'] = {},
+        lua_ls = {
+          -- cmd = { ... },
+          -- filetypes = { ... },
+          -- capabilities = {},
+          settings = {
+            Lua = {
+              completion = {
+                callSnippet = 'Replace',
+              },
+              diagnostics = { disable = { 'missing-fields' } }, -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+            },
+          },
+        },
+        powershell_es = {},
+        tailwindcss = {},
       },
     },
-    config = function()
-      --  This function gets run when an LSP attaches to a particular buffer.
+    config = function(_, opts)
+      local make_map = function(bufnr, prefix)
+        return function(keys, func, desc, mode)
+          mode = mode or 'n'
+          vim.keymap.set(mode, keys, func, { buffer = bufnr, desc = (prefix or '') .. desc })
+        end
+      end --  This function gets run when an LSP attaches to a particular buffer.
       --    That is to say, every time a new file is opened that is associated with
       --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
       --    function will be executed to configure the current buffer
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
-        callback = function(event)
-          local map = function(keys, func, desc, mode)
-            mode = mode or 'n'
-            vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
-          end
+        callback = function(event, a)
+          local map = make_map(event.buf, 'LSP: ')
 
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
@@ -58,7 +120,7 @@ return {
 
           -- Rename the variable under your cursor.
           --  Most Language Servers support renaming across files, etc.
-          map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+          map('<leader>gR', vim.lsp.buf.rename, '[G]o [R]ename')
 
           -- Execute a code action, usually your cursor needs to be on top of an error
           -- or a suggestion from your LSP for this to activate.
@@ -119,37 +181,6 @@ return {
         vim.diagnostic.config { signs = { text = diagnostic_signs } }
       end
 
-      -- Enable the following language servers
-      --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
-      --
-      --  Add any additional override configuration in the following tables. Available keys are:
-      --  - cmd (table): Override the default command used to start the server
-      --  - filetypes (table): Override the default list of associated filetypes for the server
-      --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
-      --  - settings (table): Override the default settings passed when initializing the server.
-      --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-      local servers = {
-        angularls = {},
-        astro = {},
-        cssls = {},
-        css_variables = {},
-        lua_ls = {
-          -- cmd = { ... },
-          -- filetypes = { ... },
-          -- capabilities = {},
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = 'Replace',
-              },
-              diagnostics = { disable = { 'missing-fields' } }, -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-            },
-          },
-        },
-        powershell_es = {},
-        tailwindcss = {},
-      }
-
       -- Ensure the servers and tools above are installed
       --  To check the current status of installed tools and/or manually install
       --  other tools, you can run
@@ -160,7 +191,7 @@ return {
 
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
+      local ensure_installed = vim.tbl_keys(opts.servers or {})
       vim.list_extend(ensure_installed, {
         'eslint_d',
         'markdownlint',
@@ -174,8 +205,14 @@ return {
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
-            local server = servers[server_name] or {}
+            local server = opts.servers[server_name] or {}
             server.capabilities = require('blink.cmp').get_lsp_capabilities(server.capabilities or {})
+            server.on_attach = function(_, bufnr)
+              local map = make_map(bufnr)
+              for _, key in ipairs(server.keys or {}) do
+                map(key[1], key[2], key[3], key[4] or 'n')
+              end
+            end
             require('lspconfig')[server_name].setup(server)
           end,
         },
