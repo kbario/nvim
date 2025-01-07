@@ -3,6 +3,13 @@ return { -- Highlight, edit, and navigate code
   build = ':TSUpdate',
   main = 'nvim-treesitter.configs', -- Sets main module to use for opts
   -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+  dependencies = {
+    {
+      'windwp/nvim-ts-autotag',
+      config = true,
+      event = { 'BufReadPre', 'BufNewFile' },
+    },
+  },
   opts = {
     ensure_installed = { 'astro', 'bash', 'c', 'css', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
     -- Autoinstall languages that are not installed

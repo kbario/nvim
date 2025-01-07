@@ -60,6 +60,8 @@ return {
         astro = {},
         cssls = {},
         css_variables = {},
+        ['emmet-language-server'] = {},
+        ['html-lsp'] = {},
         ['json-lsp'] = {},
         lua_ls = {
           -- cmd = { ... },
@@ -90,7 +92,7 @@ return {
       --    function will be executed to configure the current buffer
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
-        callback = function(event, a)
+        callback = function(event)
           local map = make_map(event.buf, 'LSP: ')
 
           -- Jump to the definition of the word under your cursor.
@@ -205,7 +207,10 @@ return {
       require('mason-lspconfig').setup {
         handlers = {
           function(server_name)
-            local server = opts.servers[server_name] or {}
+            local server = opts.servers[server_name]
+            if not server then
+              return
+            end
             server.capabilities = require('blink.cmp').get_lsp_capabilities(server.capabilities or {})
             server.on_attach = function(_, bufnr)
               local map = make_map(bufnr)
